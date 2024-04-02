@@ -1,0 +1,74 @@
+.delete-post-dialogue, .delete-comment-dialogue, .delete-acct-dialogue {
+    font-family: Arial, Helvetica, sans-serif;
+    width: fit-content;
+    background-color: white;
+    padding: 15px 30px;
+    border-width: 4px;
+    border-color: #00703E;
+    border-style: solid;
+    border-radius: 36px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    position: fixed;
+    top: 35%;
+    left: 35%;
+}
+
+#main-instruction {
+    font-size: 32px;
+    color: #00703E;
+    margin: 0;
+}
+
+#description-pop {
+    font-size: 22px;
+    text-align: center;
+    line-height: 1.4;
+    color: #00703E;
+    margin: 10px 0;
+}
+
+.buttons {
+    display: flex;
+    gap: 40px;
+}
+
+#cancel-button, #delete-button {
+    width: 150px;
+    height: 35px;
+    font-size: 22px;
+    border-radius: 36px;
+}
+
+#cancel-button {
+    background-color: #00703E;
+    color: white;
+    border: none;
+    border-radius: 36px;
+    outline: none;
+}
+
+#cancel-button:hover {
+    background-color: white;
+    color: #00703E;
+    border-width: 2.5px;
+    border-style: solid;
+}
+
+#delete-button {
+    background-color: white;
+    color: #00703E;
+    border-width: 2.5px;
+    border-style: solid;
+    border-color: #00703E;
+    border-radius: 36px;
+    outline: none;
+}
+
+#delete-button:hover {
+    background-color: red;
+    color: white;
+}

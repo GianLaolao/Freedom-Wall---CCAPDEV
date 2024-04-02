@@ -1,0 +1,181 @@
+
+body {
+    background-color: #F4F4F4;
+}
+
+* {
+    font-family: 'Avenir Next', sans-serif;
+}
+
+.header {
+    margin: 80px 50px 0px;
+    width: 380px;
+    height: 70px;
+}
+
+.header img {
+    width: 70px;
+    height: 70px;
+    float: left;
+}
+
+.header h1 {
+    float: left;
+    margin: 10px 20px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #00703C;
+}
+
+.mid-block {
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    height: 400px;
+    background-color: #00703C;
+    margin: 40px 0px;
+    color: white;
+}
+
+.mid-block h1 {
+    position: relative;
+    top: 20%;
+    left: 17%;
+    width: fit-content;
+    text-align: center;
+    font-size: 40px;
+}
+
+.mid-block p {
+    top: 250px;
+    text-align: center;
+    left: 29%;
+    width: fit-content;
+    position: relative;
+}
+
+#sign-up {
+    color: white;
+    text-decoration: none;
+}
+
+#sign-up:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.login {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    float: right;  
+    color: #00703C;
+    background-color: white;
+    width: 400px;
+    height: auto;
+    border: 5px solid #00703C;
+    border-radius: 35px;
+    right: 80px;
+    bottom: 200px;
+    box-shadow: 5px 5px 10px rgba(57, 73, 60, 0.3);
+}
+
+#h-login {
+    position: absolute;
+    margin: 20px 142px;
+    font-size: 40px;
+    width: 120px;
+}
+
+#bar {
+    position: relative;
+    background: #00703C;
+    width: 4px;
+    height: 40px;
+    float: left;
+    margin-top: 25px;
+    margin-left: 50px;
+}
+
+#login-btn {
+    position: relative;
+    width: 300px;
+    height: 60px;
+    margin-top: 30px;
+    margin-left: 10px;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    color: white;
+    background-color: #00703C;
+    border-color: #00703C;
+}
+
+#login-btn:hover {
+    cursor: pointer;
+}
+
+#login-btn:active {
+    background-color: #17b86d;
+    border-color: #17b86d;
+}
+
+#login_form {
+    position: relative;
+    top: 30px;
+    display: block;
+    position: relative;
+    justify-content: center;
+    margin: 20px 0px 10px 30px;
+    padding: 5px 5px;
+    height: 330px;
+}
+
+.box{
+    color: rgb(0, 0, 0);
+    border-width: 3px;
+    font-size: 15px;
+    padding-left: 10px;
+    height: 35px;
+    width: 330px;
+    margin: 10px 0px;
+}
+
+#pass-eye {
+    position: absolute;
+    background-image: url('../images/pass-eye.png');
+    background-size: 92px 50px;
+    background-position: 42px 52px;
+    width: 40px;
+    height: 40px;
+    left: 80%;
+}
+
+#pass-vis {
+    position: absolute;
+    border-width: 3px;
+    width: 20px;
+    height: 20px;
+    top: 230px;
+    left: 85%;
+    display: none;
+}
+
+#pass-vis:hover {
+    cursor: pointer;
+}
+
+.label {
+    font-weight: 700;
+}
+
+.error {
+    position: relative;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    top: 30px;
+    align-self: center;
+    margin: 0px;
+}

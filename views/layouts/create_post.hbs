@@ -1,0 +1,74 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/create_post_style.css">
+    <title>Freedom Wall</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+        <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    {{> header}}
+    <div class="page">
+        <div class="main">
+            <div class="container">
+                <div class="top">
+                    <div id="bar"></div>
+                    <span>Create Post</span>
+                </div>
+                <form action="/create-post" method="post">
+                    <div class="title-bar">
+                        <input type="text" name="title" id="title_input" placeholder="Title" required>
+                    </div>
+                    <div class="text-box">
+                        <textarea id="text_input" name="content" placeholder="Text" row="auto" cols="auto" required></textarea>
+                    </div>
+                    <div class="tags">
+                        <div class="tag-cont" name="Community">
+                            <label class="tag">
+                                <span>Community</span>
+                                <input type="radio" name="tag_type" value="Community" required>
+                            </label>
+                        </div>
+                        <div class="tag-cont" name="Education">
+                            <label class="tag">
+                                <span>Education</span>
+                                <input type="radio" name="tag_type" value="Education">
+                            </label>
+                        </div>
+                        <div class="tag-cont" name="Homework">
+                            <label class="tag">
+                                <span>Homework</span>
+                                <input type="radio" name="tag_type" value="Homework">
+                            </label>
+                        </div>
+                        <div class="tag-cont" name="General">
+                            <label class="tag">
+                                <span>General</span>
+                                <input type="radio" name="tag_type" value="General">
+                            </label>
+                        </div>
+                        <div class="tag-cont" name="Event">
+                            <label class="tag">
+                                <span>Event</span>
+                                <input type="radio" name="tag_type" value="Event">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="button-cont">
+                        <button class="button" id="cancel-button"> Cancel</button>
+                        <button class="button" type="submit" id="post_btn">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+    <script>
+        $("#cancel-button").on('click', function() {
+            event.preventDefault();
+            window.location.href = "/forum";
+        });
+    </script>
+  </body>
+</html>

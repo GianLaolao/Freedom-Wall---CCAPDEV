@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/edit-prof.css" />
+    <link rel="stylesheet" href="/css/delete_post_dialogue.css" />  
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <script src="/js/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    {{> header}}
+    <div class="delete-acct-dialogue">
+      <h2 id="main-instruction">
+          Delete Account?
+      </h2>
+      <p id="description-pop">
+          Are you sure that you want to delete your account?<br>
+          You cannot undo this process.
+      </p>
+      <div class="buttons">
+          <a href="/edit_profile"><button id="cancel-button">Cancel</button></a>
+          <a href="/user/{{user.id}}/delete"><button id="delete-button">Delete</button></a>
+      </div>
+    </div>
+
+    <div class="page">
+      <form class="profile-section" action="/user/{{user.id}}" method="post">
+        <div class="top-p">
+            <div class="profile-pic">
+                <input type="file" id="profilePicInput" name="profilePicInput" accept="image/jpeg, image/jpg, image/png" style="display: none"/>
+                <label for="profilePicInput">
+                    <img id="profilePic" src="/images/pfp.jpg" alt="profile-pic" />
+                </label>
+                <img src="/images/pen-icon.svg" class="pen" id="pen-pfp" alt="pen-pfp" />
+            </div>
+            <div class="username-container">
+                <input type="text" name="username" id="username" value="{{user.username}}" required>
+                <img src="/images/pen-icon.svg" class="pen" id="green-pen1" alt="green-pen" />
+            </div>
+        </div>
+        <div class="bio-section">
+          <textarea id="text_input" name="bio" rows="auto" cols="100">{{{user.bio}}}</textarea>
+          <img src="/images/pen-icon.svg" class="pen" id="green-pen2" alt="green-pen" />
+        </div>
+        <div class="pfp-buttons">
+          <a href="/user/{{user.id}}">
+            <button type="button" class="pfp-button" id="pfp-cancel-button" >
+                Cancel
+            </button>
+          </a>
+          <button class="pfp-button" type="submit" id="pfp-confirm-button" >
+              Confirm
+          </button>
+        </div>
+      </form>
+
+      <div class="delete-cont">
+        <div class="top">
+          <h2>Delete Account?</h2>
+        </div>
+        <div class="bot">
+          <button class="pfp-button" id="delete_acct">Delete</button>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="/js/profile-pic.js"></script>
+    <script src="/js/script.js"></script>
+    <script>
+      var textarea = $("#text_input");
+       textarea.val(textarea.val().replace('<br>','\n'));
+    </script>
+  </body>
+</html>

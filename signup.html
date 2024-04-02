@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/signup_style.css" type="text/css" />
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <title>Freedom Wall - Sign Up</title>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <img src="/images/logo.png" />
+        <h1>Freedom Wall</h1>
+      </div>
+      <div class="mid-block">
+        <div class="signup">
+          <div id="bar"></div>
+          <h2 id="h-signup">Sign Up</h2>
+          <form class="inputs" id="signup_form" action="/signup" method="POST">
+            <div class="left-input">
+              <span class="label">Email</span>
+              <input type="email" class="box" id="email" name="email" value="" required/>
+
+              <span class="label">Password</span>
+              <input type="password" class="box" id="password" name="password" value="" required/>
+              <label class="pass-img" id="cust-bpass" for="b-pass"></label>
+              <input type="checkbox" class="pass-vis" id="b-pass"/>
+              
+              <span class="label">Confirm Password</span>
+              <input type="password" class="box" id="conf_password" name="conf_password" value="" required/>
+              <label class="pass-img" id="cust-bconf" for="b-confpass"></label>
+              <input type="checkbox" class="pass-vis" id="b-confpass"/>
+            </div>
+            <div class="right-input">
+              <span class="label">Username</span>
+              <input type="text" class="box" id="username" name="username" value="" required/>
+              <span class="label">Birthday</span>
+              <input type="date" class="box" id="birthday" name="birthday" value=""required />
+              <button type="submit" id="signup-btn">
+                Create Account
+              </button>
+            </div>
+          </form>
+          <div class="login">
+            <span class="label">Already have an account?</span>
+            <a href="/" id="login-link">Log In</a>
+          </div>
+        </div>
+      </div>
+      <script src="/js/script.js"></script>
+    </div>
+  </body>
+</html>

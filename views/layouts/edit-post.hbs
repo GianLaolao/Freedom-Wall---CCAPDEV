@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/post.css">
+    <link rel="stylesheet" href="/css/comment.css">
+    <link rel="stylesheet" href="/css/delete_post_dialogue.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>Freedom Wall</title>
+</head>
+<body>
+    {{> header}}
+    {{> delete_comment_dialogue}}
+    <div class="content">
+        <div class="post" id="{{post._id}}">
+            <div class="top">
+                <div class="user-info">
+                    <a href="#" ><img id="profile-pic" src="/images/pfp.jpg" alt="profile-pic"></a>
+                    <p id="username">{{post.user.username}}</p>
+                </div>
+                <span id="date">{{formatDate post.datePosted}}</span>
+                <div class="tag">
+                    <span>{{post.tag}}</span>
+                </div>
+            </div>
+            <h3 id="title">{{post.title}} </h3>
+            <form action="/post/{{post.id}}/edit" method="POST">
+                <textarea id="post-textarea" name="content">{{{post.content}}}</textarea>
+                <div class="action-icons">
+                    <div class="i-right">
+                        <a href="/post/{{post.id}}"><button type="button" class="post-btn" id="post-cancel">Cancel</button></a>
+                        <button type="submit" class="post-btn" id="post-save">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="comment-posts">
+            <div class="add-comment-panel">
+                <textarea id="comment-textarea" name="content" placeholder="Add a comment" row="auto" cols="auto"></textarea>
+                <button id="add-comment-button">
+                    Comment
+                    <svg id="button-add-comment" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" fill="#00703E"/>
+                    </svg>
+                </button>
+            </div>
+            <span id="line"></span>
+            {{#each comment}}
+                <div class="comment-post">
+                    <div class="user-info">
+                        <a href="/user/{{this.user.userId}}"><img id="profile-pic" src='/images/pfp.jpg' alt="profile-pic"></a>
+                        <p id="username">{{this.user.username}}</p>
+                    </div>
+                    <p contenteditable="false" id="comment">{{this.content}}</p>
+                    {{#if (eq this.user.userId user._id)}}
+                    <div class="action-icons">
+                            <div class="edit-comm">
+                                <div id="edit-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 -960 960 960" width="27">
+                                        <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" fill="#00703E"/>
+                                    </svg>                        
+                                </div>
+                                <p>Edit</p>
+                            </div>
+                            <div class="delete-comm">
+                                <a href="#" id="delete-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="27" viewBox="0 -960 960 960" width="27">
+                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" fill="#00703E"/>
+                                    </svg>                        
+                                </a>
+                                <p>Delete</p>
+                            </div>
+                    </div>
+                    {{/if}}
+                </div>
+            {{/each}}        
+    <script src="/js/script.js"></script>
+    <script>
+        var textarea = $("#post-textarea");
+        textarea.val(textarea.val().replace(/\s+/g, ' '));
+        textarea.val(textarea.val().replace(/<br>/g, '\n'));
+    </script>
+</body>
+</html>

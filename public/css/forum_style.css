@@ -1,0 +1,247 @@
+body {
+    background-color: #D9D9D9;
+    overflow-x: hidden;
+}
+
+* {
+    font-family: 'Avenir Next', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    color: white;
+}
+
+.page {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex-direction: column;
+    top: 60px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.create {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    width: 900px;
+    margin: 30px 0px;
+    background-color: #00703C;
+    border-radius: 30px;
+    align-items: center;
+}
+
+#pfp {
+    width: 55px;
+    height: 55px;
+    background-color: #A6A6A6;
+    border-radius: 50%;
+    margin: 10px 20px;
+}
+
+.create-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 720px;
+    height: 50px;
+    margin: 10px 20px;
+    background: #F4F4F4;
+    border-radius: 50px;
+    padding-left: 10px;
+}
+
+.create-bar:hover {
+    cursor: pointer;
+}
+
+#pen-icon {
+    height: 40px;
+    width: 40px;
+}
+
+.create-bar span {
+    font-size: 25px;
+    font-family: 'Avenir', sans-serif;
+    font-weight: bold;
+    border-radius: 50px;
+    background: transparent;
+    margin-left: 10px;
+    color: #A6A6A6;
+}
+
+.forum-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 5px solid #00703C;
+    height: fit-content;
+    width: 1400px;
+    align-items: center;
+    border-radius: 50px;
+    box-shadow: 0 0 20px gray;
+    color: white;
+}
+
+.forum {
+    position: relative;
+    height: 150px;
+    width: 1320px;
+    background-color: #00703C;
+    margin: 20px 0px 20px 0px;
+    border-radius: 30px;
+}
+
+.forum:hover {
+   cursor: pointer;
+}
+
+.top {
+    position: relative;
+    display: flex;
+    width: auto;
+    margin: 10px 0 0 10px;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.top-left {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    left: 30px;
+}
+
+.forum-pfp {
+    position: relative;
+    background-color: #A6A6A6;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.top span {
+    font-weight: bold;
+    padding-right: 20px;
+}
+
+.forum h1 {
+    position: relative;
+    margin: 10px 0;
+    left: 7%;
+}
+
+#date {
+    position: relative;
+    justify-self: center;
+    align-self: center;
+    font-size: small;
+    color: white;
+    font-weight: none;
+}
+
+.tag {
+    position: relative;
+    display: flex;
+    width: 170px;
+    height: 35px;
+    background-color: #00BF63;
+    align-items: center;
+    justify-content: center;
+    right: 60px;
+}
+
+.tag::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 18px solid transparent;
+    border-left: 20.5px solid #00BF63;
+    border-bottom: 17px solid transparent;
+}
+
+.action {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    top: 10px;
+    left: 10%;
+    font-size: 15px;
+    align-items: center;
+}
+
+.comment-cont, .up, .down {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+   
+}
+
+.comment-cont:hover .comment path{
+    fill: white;
+    cursor: pointer;
+}
+
+.thumb-up, .thumb-down, .comment {
+    transition: transform 0.3s ease;
+}
+
+.thumb-up:hover, .thumb-down:hover, .comment:hover {
+    transform: scale(1.1);  
+}
+
+.icon {
+    position: relative;
+    height: 25px;
+    width: 25px;
+    margin: 0px 5px;
+}
+
+.action-text {
+    position: relative;
+    font-size: 15px;
+}
+
+#filter-form {
+    position: relative;
+    margin: 20px 10px 10px;
+}
+
+#filter-form label {
+    color: #00703C;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#filter-form select {
+    position: relative;
+    color:#00703C;
+    height: 25px;
+    width: auto;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+}

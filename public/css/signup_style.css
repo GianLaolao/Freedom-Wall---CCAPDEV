@@ -1,0 +1,186 @@
+
+body {
+    background-color:  #D9D9D9;
+}
+
+* {
+    font-family: 'Avenir Next', sans-serif;
+    margin: 0;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 380px;
+    height: 70px;
+    left: 40%;
+    top: 20px;
+}
+
+.header img {
+    width: 70px;
+    height: 70px;
+    float: left;
+}
+
+.header h1 {
+    float: left;
+    margin: 10px 20px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #00703C;
+}
+
+
+.mid-block {
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    height: 420px;
+    background-color: #00703C;
+    margin: 40px 0px;
+    color: white;
+    top: 22%;
+}
+
+.signup {
+    position: relative;
+    display: flex;
+    flex-direction: column;  
+    color: #00703C;
+    background-color: white;
+    width: 810px;
+    height: 550px;
+    border: 5px solid #00703C;
+    border-radius: 35px;
+    left: 24%;
+    bottom: 80px;
+    box-shadow: 5px 5px 10px rgba(46, 209, 79, 0.3);
+}
+
+#h-signup {
+    position: absolute;
+    margin: 20px 130px;
+    font-size: 40px;
+    width: 180px;
+    left: 25%;
+}
+
+#bar {
+    position: relative;
+    background: #00703C;
+    width: 4px;
+    height: 40px;
+    float: left;
+    left: 22%;
+    margin-top: 25px;
+    margin-left: 50px;
+}
+
+#signup-btn {
+    position: relative;
+    top: 160px;
+    left: 30px;
+    width: 320px;
+    height: 45px;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    background-color: #00703C;
+    border-color: #00703C;
+}
+
+#signup-btn:hover {
+    cursor: pointer;
+}
+
+#signup-btn:active {
+    background-color: #17b86d;
+    border-color: #17b86d;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: fit-content;
+    justify-content: center;
+    margin: 60px 0px 10px 30px;
+}
+
+.left-input, .right-input {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 15px;
+}
+
+.box {
+    color: rgb(0, 0, 0);
+    border-width: 3px;
+    font-size: 15px;
+    padding-left: 10px;
+    height: 35px;
+    width: 330px;
+    margin: 10px 0px;
+}
+
+.pass-vis {
+    display: none;
+}
+
+.pass-img {
+    position: absolute;
+    background-image: url('../images/pass-eye.png');
+    background-size: 92px 50px;
+    width: 40px;
+    height: 40px;
+    top: 43%;
+    left: 83%;
+    cursor: pointer;
+}
+
+#cust-bpass {
+    background-position: 42px 52px;
+    left: 43%;
+    top: 41.1%;
+}
+
+#cust-bconf {
+    background-position: 42px 52px;
+    left: 43%;
+    top: 56%;
+}
+
+.label {
+    font-weight: 700;
+}
+
+.login {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: fit-content;
+    left: 15%;
+    top: 14%;
+}
+
+#login-link {
+    font-weight: 700;
+    text-decoration: none;
+    color: #00703C;
+}
+
+#login-link:hover {
+    text-decoration: underline;
+}
+

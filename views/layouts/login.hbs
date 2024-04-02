@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
+    <title>Freedom Wall - Log In</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="page">
+        <div class="header">
+            <img src="images/logo.png"> 
+            <h1>Freedom Wall</h1>
+        </div>
+
+        <div class="mid-block">
+            <h1>Free to Post Free to Share</h1>
+            <p>New to Freedom Wall? <br>
+                <a href="/signup" id="sign-up">Sign Up</a>
+            </p>
+
+            <div class="login">
+                <div id="bar"></div>
+                <h2 id="h-login">Log In</h2>
+                {{#if messages.length}}
+                  {{#each messages}}
+                    <div class="error">{{this}}</div>
+                  {{/each}}
+                {{/if}}
+                <form class="inputs" id="login_form" action="/login" method="post">
+                    <span class="label">Email</span><br>
+                    <input type="email" class="box" id="email" name="email" value="" ><br><br>
+                    <span class="label">Password</span><br>
+                    <input type="password" class="box" id="password" name="password" value="" >
+                    
+                    <label for="pass-vis" id="pass-eye"></label>
+                    <input type="checkbox" id="pass-vis">   
+                    <button type="submit" id="login-btn">Log In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+  </body>
+</html>

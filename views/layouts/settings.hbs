@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/settings.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <script src="/js/jquery-3.6.0.min.js"></script>
+</head>
+    <body>
+        {{> header}}
+        <div class="page">
+            <div class="main">
+                <div class="settings-cont">
+                    <div class="top">
+                        <div id="bar"></div>
+                        <span>Settings</span>
+                    </div>
+                    <form id="settings-form" action="/settings" method="post">
+                        <div class="input">
+                            <div class="left-i">
+                                <span class="label">Old Password</span>
+                                <input type="password" class="box" id="old-password" name="oldPassword" value="" required/>
+                                <label class="pass-img" id="cust-opass" for="o-pass"></label>
+                                <input type="checkbox" class="pass-vis" id="o-pass"/>
+
+                                <span class="label">New Password</span>
+                                <input type="password" class="box" id="new-password" name="newPassword" value="" required/>
+                                <label class="pass-img" id="cust-npass" for="n-pass"></label>
+                                <input type="checkbox" class="pass-vis" id="n-pass"/>
+                            </div>
+                            <div class="right-i">
+                                <span class="label">Confirm Password</span>
+                                <input type="password" class="box" id="new-conf-password" name="newConfPassword" value="" required/>
+                                <label class="pass-img" id="cust-cpass" for="c-pass"></label>
+                                <input type="checkbox" class="pass-vis" id="c-pass"/>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="buttons">
+                        <a href="/forum">
+                            <button id="cancel-btn">
+                                Cancel
+                            </button>
+                        </a>
+                        <button type="submit" id="change-btn" form="settings-form">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

@@ -9,4 +9,4 @@ npm install mongoose express body-parser hbs express-flash express-session metho
 Create file name ".env"
 Input the ff:
 
-SESSION=SECRET=[put random characters]
+SESSION_SECRET=[put random characters]

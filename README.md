@@ -9,4 +9,4 @@ npm install mongoose express hbs express-flash express-session express-fileuploa
 Create file name ".env"
 Input the ff:
 
-SESSION_SECRET=[put random characters]
+SESSION_SECRET=put random characters here

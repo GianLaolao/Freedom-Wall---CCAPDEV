@@ -125,48 +125,6 @@ $("#post_btn").on('submit', function() {
    alert("Successfully posted.")
 });
 
-$(document).ready(function() {
-
-  var upClicked = false;
-  var downClicked = false;
-
-  $("#up-icon").click(function() {
-    if (!upClicked) {
-      $(".up-count").text("1");
-      upClicked = true;
-      $(this).addClass("clicked");
-
-      if (downClicked) {
-        downClicked = false;
-        $("#down-icon").removeClass("clicked");
-        $(".down-count").text("0"); 
-      }
-    } else {
-      $(".up-count").text("0");
-      upClicked = false;
-      $(this).removeClass("clicked");
-    }
-  });
-
-  $("#down-icon").click(function() {
-    if (!downClicked) {
-      $(".down-count").text("1");
-      downClicked = true;
-      $(this).addClass("clicked");
-
-      if (upClicked) {
-        upClicked = false;
-        $("#up-icon").removeClass("clicked");
-        $(".up-count").text("0"); 
-      }
-    } else {
-      $(".down-count").text("0");
-      downClicked = false;
-      $(this).removeClass("clicked");
-    }
-  });
-});
-
 $("#o-pass").click(function() {
   var pass = $("#old-password");
   var img = $("#cust-opass");
@@ -214,10 +172,13 @@ $('.delete-comm').on('click', function() {
 
   var body = $(this).closest('.content');
   var buttons = $('.content button');
+  var commentId = $(this).closest('.comment-post').attr('id');
+  var postId = $('.post').attr('id');
 
   buttons.prop("disabled", true);
   body.addClass('blurred');
   $('.delete-comment-dialogue').css('display', 'flex');
+  $('.delete-comment-dialogue .buttons').attr('action', '/post/'+postId+'/comment/'+commentId+'/delete')
 });
 
 $('.tags').on('click', '.tag-cont', function(){
@@ -271,7 +232,6 @@ $('#change-btn').on('click', function(e) {
       $('#settings-form').submit();
   }
 });
-
 
 $(".edit-comm").on('click', function() {
     sessionStorage.setItem('scrollPosition', window.scrollY);

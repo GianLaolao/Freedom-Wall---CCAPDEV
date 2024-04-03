@@ -11,7 +11,7 @@
     <div class="page">
         <div class="main">
             <div class="create">
-                <a  ="/user/{{user.id}}"><img class="profile" id="pfp" src="/images/pfp.jpg" alt="profile-pic"></a>
+                <a  ="/user/{{user.id}}"><img class="profile" id="pfp" src="/images/{{user.profile}}" alt="profile-pic"></a>
                 <a href="/create-post">
                     <div class="create-bar">
                         <img src="/images/pen-icon.svg" id="pen-icon">
@@ -32,8 +32,9 @@
                 <div class="forum">
                     <div class="top">
                         <div class="top-left">
-                            <a href="/user/{{this.userId.userId}}"><img src="/images/pfp.jpg" class="forum-pfp"></a>
-                            <span> {{this.user.username}}</span>
+                            <a href="/user/{{this.user.userId}}">
+                            <img src="/images/{{displayUser this.user.userId ../users 1}}" class="forum-pfp"></a>
+                            <span> {{displayUser this.user.userId ../users 2}}</span>
                             <span id="date">{{formatDate this.datePosted}}</span>
                         </div>
                         <div class="tag">
@@ -49,11 +50,11 @@
                             <span class="action-text">Comment</span>
                         </div>
                         <div class="up">
-                            {{{color "a" ../liked this._id}}}
+                            {{{color ../liked this._id ../user "up"}}}
                             <span class="action-text up-num">{{this.upVote}}</span>
                         </div>
                         <div class="down">
-                            {{{color "b" ../disliked this._id}}}
+                            {{{color ../disliked this._id ../user "down"}}}
                             <span class="action-text down-num">{{this.downVote}}</span>
                         </div>
                     </div>

@@ -18,6 +18,9 @@
                         <div id="bar"></div>
                         <span>Settings</span>
                     </div>
+                    {{#if error}}
+                        <h3 id="error">{{error}}</h3>
+                    {{/if}}
                     <form id="settings-form" action="/settings" method="post">
                         <div class="input">
                             <div class="left-i">
@@ -38,17 +41,13 @@
                                 <input type="checkbox" class="pass-vis" id="c-pass"/>
                             </div>
                         </div>
+                        <div class="buttons">
+                            <a href="/forum">
+                                <button type="button" id="cancel-btn">Cancel</button>
+                            </a>
+                            <button type="submit" id="change-btn">Confirm</button>
+                        </div>
                     </form>
-                    <div class="buttons">
-                        <a href="/forum">
-                            <button id="cancel-btn">
-                                Cancel
-                            </button>
-                        </a>
-                        <button type="submit" id="change-btn" form="settings-form">
-                            Confirm
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>

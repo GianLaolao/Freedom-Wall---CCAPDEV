@@ -16,8 +16,8 @@
         <div class="post" id="{{post._id}}">
             <div class="top">
                 <div class="user-info">
-                    <a href="#" ><img id="profile-pic" src="/images/pfp.jpg" alt="profile-pic"></a>
-                    <p id="username">{{post.user.username}}</p>
+                    <a href="#" ><img id="profile-pic" src="/images/{{displayUser post.user.userId users 1}}" alt="profile-pic"></a>
+                    <p id="username">{{displayUser post.user.userId users 2}}</p>
                 </div>
                 <span id="date">{{formatDate post.datePosted}}</span>
                 <div class="tag">
@@ -41,15 +41,15 @@
                 </div>
                 <div class="like">
                     <a href="#" id="like">
-                        <svg id="like-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill: white;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>
+                        {{{postColor liked user 1}}}
                     </a>
-                    <span class="num" id="up-num">{{post.upVote}}</span>
+                    <span class="num" id="up-num">{{postNum liked}}</span>
                 </div>
                 <div class="dislike">
                     <a href="#" id="dislike">
-                        <svg id="dislike-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:white;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>              
+                        {{{postColor disliked user 2}}}
                     </a>
-                    <span class="num" id="down-num">{{post.downVote}}</span>
+                    <span class="num" id="down-num">{{postNum disliked}}</span>
                 </div>
                 {{#if (eq post.user.userId user._id)}}
                 <div class="i-right">
@@ -74,21 +74,21 @@
             </div>
         </div>
         <div class="comment-posts">
-            <div class="add-comment-panel">
+            <form action="/post/{{post._id}}/comment" method="post" class="add-comment-panel">
                 <textarea id="comment-textarea" name="content" placeholder="Add a comment" row="auto" cols="auto"></textarea>
-                <button id="add-comment-button">
+                <button type="submit" id="add-comment-button">
                     Comment
                     <svg id="button-add-comment" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
                         <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" fill="#00703E"/>
                     </svg>
                 </button>
-            </div>
+            </form>
             <span id="line"></span>
             {{#each comment}}
-                <div class="comment-post">
+                <div class="comment-post" id="{{this.id}}">
                     <div class="user-info">
-                        <a href="/user/{{this.user.userId}}"><img id="profile-pic" src='/images/pfp.jpg' alt="profile-pic"></a>
-                        <p id="username">{{this.user.username}}</p>
+                        <a href="/user/{{this.user.userId}}"><img id="profile-pic" src='/images/{{displayUser this.user.userId ../users 1}}' alt="profile-pic"></a>
+                        <p id="username">{{displayUser this.user.userId ../users 2}}</p>
                     </div>
                     <p id="comment">{{this.content}}</p>
                     {{#if (eq this.user.userId ../user._id)}}

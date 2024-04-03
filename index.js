@@ -7,13 +7,11 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/freedomWallDB');
 
 const express = require('express');
+const app = new express();
+
+
+const fileUpload = require('express-fileupload');
 const path = require('path');
-const multer = require('multer');
-
-const upload = multer({dest: '/public/images'});
-
-const app = express();
-
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const flash = require('express-flash');
@@ -32,6 +30,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+app.use(fileUpload());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
@@ -72,21 +71,32 @@ hbs.registerHelper('eq', function (user, curUser) {
     return user === curUser;
 });
 
-hbs.registerHelper('color', function (type, data, curPost) {
+hbs.registerHelper('displayUser', function(userId, users, type) {
+
+    const user = users.find(u => u._id === userId);
+    switch (type) {
+        case 1: return user.profile;
+        case 2: return user.username;
+    } 
+})
+
+hbs.registerHelper('color', function (data, post, user,type) {
+
+    const inData = data.some(d => (d.userId === user._id && d.postId === post));
+
+    console.log(inData);
 
     switch(type) {
-        case "a": {
-            const isLiked = data.some(post => post.postId === curPost);
-            if (isLiked === true) {
+        case "up": {
+            if (inData) {
                 return `<svg class="icon thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
             }
             else {
                 return `<svg class="icon thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#00703C;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
             }
         }
-        case "b": {
-            const isDisliked = data.some(post => post.postId === curPost);
-            if(isDisliked === true) {
+        case "down": {
+            if(inData) {
                 return `<svg class="icon thumb-down" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
             }
             else {
@@ -95,6 +105,38 @@ hbs.registerHelper('color', function (type, data, curPost) {
         }
     }
 });
+
+
+hbs.registerHelper('postNum', function(data) {
+    return data.length;
+});
+
+hbs.registerHelper('postColor', function(data, user, type) {
+
+    const inData = data.some(d => d.userId === user._id);
+
+    switch(type) {
+        case 1: {
+            if (inData) {
+                return `<svg id="like-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#00703C;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
+            }
+            else {
+                return `<svg id="like-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
+            }
+        }
+        case 2: {
+            if (inData) {
+                return `<svg id="dislike-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#00703C;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
+            }
+            else {
+                return `<svg id="dislike-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
+            }
+        }
+           
+    }
+
+
+})
 
 app.get('/', checkNotAuthenticated, function(req, res) {
     res.render('login', { messages: req.flash('error') });
@@ -137,6 +179,8 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
 
     const filter = req.query.filter;
     var post = await Post.find({}).sort({ datePosted: -1});
+    var allId = post.map(post => post.user.userId);
+    var users = await User.find({ _id: {$in: allId}});
 
     if(filter === "new") {
         post = await Post.find({}).sort({ datePosted: -1});
@@ -151,7 +195,7 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     const liked = await Liked.find({userId: user.id});
     const disliked = await Disliked.find({userId: user.id});
 
-    res.render('forum', { post, user, liked, disliked})
+    res.render('forum', { post, user, users, liked, disliked})
 });
 
 app.delete('/logout', function(req, res) {
@@ -201,7 +245,13 @@ app.get('/forum/search', checkAuthenticated, async function(req, res) {
         res.redirect('/forum');
     }
 
-    res.render('forum', { post, user });
+    const allId = post.map(p => p.user.userId);
+    const users = await User.find({_id: {$in: allId}});
+
+    const liked = await Liked.find({userId: user.id});
+    const disliked = await Disliked.find({userId: user.id});
+
+    res.render('forum', { post, user, users, liked, disliked });
 });
 
 app.post('/settings/submit', checkAuthenticated, async function(req, res) {
@@ -214,11 +264,16 @@ app.get('/post/:id', async function(req, res) {
     const id = req.params.id;
     const user = req.user
     const post = await Post.findById(id);
-    const comment = await Comment.find({postId: id});
-    const liked = await Liked.find({postId: id, userId: user.id});
-    const disliked = await Disliked.find({postId: id, userId: user.id})
+    const comment = await Comment.find({postId: id });
 
-    res.render('post', { post, comment, user, liked, disliked });
+    const allId = comment.map(c => c.user.userId);
+
+    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+
+    const liked = await Liked.find({postId: id});
+    const disliked = await Disliked.find({postId: id})
+
+    res.render('post', { post, comment, user, users, liked, disliked });
 });
 
 app.get('/post/:id/edit', async function(req, res) {
@@ -227,7 +282,10 @@ app.get('/post/:id/edit', async function(req, res) {
     const post = await Post.findById(id);
     const comment = await Comment.find({postId: id});
 
-    res.render('edit-post', { post, comment, user});
+    const allId = comment.map(c => c.user.userId);
+    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+
+    res.render('edit-post', { post, comment, user, users});
 });
 
 app.post('/post/:id/edit', async function(req, res) {
@@ -238,14 +296,34 @@ app.post('/post/:id/edit', async function(req, res) {
     
     await Post.updateOne({_id: id}, {content: content});
 
-    res.redirect('/post/' + id);
+    
+    res.redirect(`/post/${id}`);
 });
 
-app.delete('/post/:id/delete', async function(req, res) {
+app.get('/post/:id/delete', async function(req, res) {
 
+    const id = req.params.id;   
+
+    await Post.findByIdAndDelete(id);
+
+    res.redirect('/forum');
+});
+
+app.post('/post/:id/comment', async function(req, res) {
 
     const id = req.params.id;
-});
+    const user = req.user;
+
+    const comment = req.body.content;
+
+    const lastId = await Comment.findOne().sort({ _id: -1 });
+    const newId = lastId ? Number(lastId.id) + 1 : 3000; 
+
+
+    await Comment.create({_id: newId, postId: id, user: { userId: user.id, username: user.username}, content: comment})
+
+    res.redirect(`/post/${id}`);
+})
 
 app.get('/post/:id1/comment/:id2/edit', async function(req, res) {
 
@@ -254,11 +332,14 @@ app.get('/post/:id1/comment/:id2/edit', async function(req, res) {
     const user = req.user;  
     const post = await Post.findById(postId);
     const comment = await Comment.find({postId: postId});
+
+    const allId = comment.map(c => c.user.userId);
+    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+
     const liked = await Liked.find({postId: postId, userId: user.id});
     const disliked = await Disliked.find({postId: postId, userId: user.id})
 
-    res.render('edit-comment', {  post, comment, user, liked, disliked, editCom: commId})
-
+    res.render('edit-comment', {  post, comment, user, users, liked, disliked, editCom: commId})
 });
 
 app.post('/post/:id1/comment/:id2/edit', async function(req, res) {
@@ -272,6 +353,16 @@ app.post('/post/:id1/comment/:id2/edit', async function(req, res) {
     res.redirect('/post/' + postId);
 });
 
+app.get('/post/:id1/comment/:id2/delete', async function(req, res) {
+
+    const postId = req.params.id1;
+    const commId = req.params.id2;
+
+    await Comment.findByIdAndDelete(commId);
+
+    res.redirect('/post/' + postId);
+});
+
 app.get('/user/:id',async function(req, res) {
     const id = req.params.id;
     const user = await User.findById(id);
@@ -281,31 +372,48 @@ app.get('/user/:id',async function(req, res) {
     res.render('profile', { user, post, curUser });
 });
 
-app.post('/user/:id', upload.single("profilePicInput"), async function(req, res) {
-    
-    const username = req.body.username;
-    const bio = req.body.bio.length;
-    // const pfp = req.file.originalName;
-    const id = req.params.id;
-
-    /*
-    await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, pfp: pfp}, null, 
-        function(err, docs) {
-            if (err) {
-                console.log(err)
-            }
-        })
-    */
-
-    res.redirect(`/user/:id`);
-});
-
-app.get('/edit_profile', checkAuthenticated, async function(req, res) {
+app.get('/user/:id/edit', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
 
     res.render('edit_profile', { user });
 });
+
+app.post('/user/:id/edit', async function(req, res) {
+       
+    const id = req.params.id;
+    const user = req.user;
+    const username = req.body.username;
+    var bio = req.body.bio;
+    const image = req.files.profilePicInput;
+
+    bio = bio.trim().length === 0 ? "This is my profile." : bio;
+
+    image.mv(path.resolve(__dirname,'public/images', image.name),(error) => {
+        if (error)
+        {
+            console.log ("Error!")
+        }
+    });
+
+    await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, profile: image.name});
+       
+    res.redirect(`/user/`+id);
+});
+
+app.post('/user/:id/delete', async function(req, res) {
+
+    const id = req.params.id;
+
+    await Liked.deleteMany({user: id});
+    await Disliked.deleteMany({user: id});
+    await Comment.deleteMany({'user.userId': id});
+    await Post.deleteMany({'user.userId': id});
+    await User.findByIdAndDelete(id);
+
+    res.redirect('/');
+});
+
 
 app.get('/create-post', checkAuthenticated,  async function(req, res) {
 
@@ -320,6 +428,16 @@ app.post('/create-post', checkAuthenticated, async function(req, res) {
     console.log(req.body.content);
     console.log(req.body.tag_type);
 
+    const user = req.user;
+    const title = req.body.title;
+    const post = req.body.content;
+    const tag = req.body.tag_type;
+
+    const lastId = await Post.findOne().sort({ _id: -1 });
+    const newId = lastId ? Number(lastId.id) + 1 : 2000; 
+
+    await Post.create({_id: newId, user: { userId: user.id, username: user.username}, title: title, 
+                        content: post, tag: tag});
 
     res.redirect('/forum');
 })
@@ -327,21 +445,27 @@ app.post('/create-post', checkAuthenticated, async function(req, res) {
 app.get('/settings', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
-    res.render('settings', { user });
+    const error = req.query.error
+    
+    res.render('settings', { user, error });
 });
 
 
 app.post('/settings', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
+    const oldPass = req.body.oldPassword;
     const newPass = req.body.newPassword;
 
-    const hashPass = await bcrypt.hash(newPass, 10);
-
-    await User.updateOne({_id: user.id},
-        { password: hashPass})
-    
-    res.redirect('/forum');
+    if(await bcrypt.compare(oldPass, user.password)) {
+        const hashPass = await bcrypt.hash(newPass, 10);
+        await User.updateOne({_id: user.id},
+            { password: hashPass })
+        res.redirect('/logout?_method=DELETE');
+    } 
+    else {
+        res.redirect('/settings?error=Incorrect Password')
+    }
 });
 
 function checkAuthenticated(req, res, next) {
@@ -365,3 +489,4 @@ const server = app.listen(3000, function() {
 
 
 
+//TODO About Page

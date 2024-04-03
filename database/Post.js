@@ -11,10 +11,16 @@ const PostSchema = mongoose.Schema({
     tag: String,
     datePosted: {
         type: Date,
-        default: () => new Date.now()
+        default: Date.now()
     },
-    upVote: Number,
-    downVote: Number,
+    upVote: {
+        type: Number,
+        default: 0
+    },
+    downVote: {
+        type: Number,
+        default: 0
+    }
 });
 
 const Post = mongoose.model('Post', PostSchema);

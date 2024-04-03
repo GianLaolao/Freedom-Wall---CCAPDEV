@@ -17,6 +17,10 @@ a:active {
     color: white;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 .profile-section {
     position: relative;
     font-family: Arial, Helvetica, sans-serif;

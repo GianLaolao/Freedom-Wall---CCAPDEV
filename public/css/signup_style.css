@@ -184,3 +184,17 @@ body {
     text-decoration: underline;
 }
 
+#about {
+    position: fixed;
+    color: gray;
+    font-size: 20px;
+    top: 95%;
+    left: 48%;
+    text-decoration: none;
+}
+
+
+
+#about:hover {
+    text-decoration: underline;
+}

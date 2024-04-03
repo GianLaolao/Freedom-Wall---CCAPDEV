@@ -3,7 +3,7 @@ CCAPDEV MCO2
 
 Packages:
 
-npm install mongoose express body-parser hbs express-flash express-session express-fileupload method-override passport passport-local bcrypt multer dotenv nodemon 
+npm install mongoose express hbs express-flash express-session express-fileupload method-override passport passport-local bcrypt dotenv nodemon 
 
 
 Create file name ".env"

@@ -66,8 +66,6 @@ hbs.registerHelper('formatDate', function(date) {
 });
 
 hbs.registerHelper('eq', function (user, curUser) {
-    // console.log(user);
-    // console.log(curUser);
     return user === curUser;
 });
 
@@ -80,32 +78,35 @@ hbs.registerHelper('displayUser', function(userId, users, type) {
     } 
 })
 
-hbs.registerHelper('color', function (data, post, user,type) {
+hbs.registerHelper('color', function (data, post, type) {
 
-    const inData = data.some(d => (d.userId === user._id && d.postId === post));
-
-    console.log(inData);
+    const inData = data.some(d => d.postId == post);
 
     switch(type) {
         case "up": {
             if (inData) {
-                return `<svg class="icon thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
+                return `<svg class="icon clicked thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
             }
             else {
-                return `<svg class="icon thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{fill:#00703C;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
+                return `<svg class="icon notClicked thumb-up" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6f-1{stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6f-1" d="M.5,12H5.28l6.11-7.06A2,2,0,0,0,12,3.51a2,2,0,0,1,2-2,2.74,2.74,0,0,1,2,.8,2.79,2.79,0,0,1,.8,2c0,2-2.87,5.86-2.87,5.86h6A2.61,2.61,0,0,1,22.5,12.7a2.94,2.94,0,0,1-.05.51L20.89,21A1.91,1.91,0,0,1,19,22.52H11.25a9.13,9.13,0,0,1-4-.95h0a9.08,9.08,0,0,0-4.06-1H.5"></path></svg>`
             }
         }
         case "down": {
             if(inData) {
-                return `<svg class="icon thumb-down" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
+                return `<svg class="icon clicked thumb-down" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6e-1{stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
             }
             else {
-                return `<svg class="icon thumb-down" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#00703C;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
+                return `<svg class="icon notClicked thumb-down" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637b715ef95e86b59c579e6e-1{stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
             }
         }
     }
 });
 
+hbs.registerHelper('forumNum', function(data, id) {
+
+    const num = data.filter(d => d.postId == id).length
+    return num;
+})
 
 hbs.registerHelper('postNum', function(data) {
     return data.length;
@@ -113,7 +114,7 @@ hbs.registerHelper('postNum', function(data) {
 
 hbs.registerHelper('postColor', function(data, user, type) {
 
-    const inData = data.some(d => d.userId === user._id);
+    const inData = data.some(d => d.userId == user._id);
 
     switch(type) {
         case 1: {
@@ -131,11 +132,8 @@ hbs.registerHelper('postColor', function(data, user, type) {
             else {
                 return `<svg id="dislike-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#00703C"><defs><style>.cls-637b715ef95e86b59c579e6e-1{fill:#FFFFFF;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637b715ef95e86b59c579e6e-1" d="M.5,12H5.28l6.11,7.06A2,2,0,0,1,12,20.49a2,2,0,0,0,2,2,2.74,2.74,0,0,0,2-.8,2.79,2.79,0,0,0,.8-1.95c0-2-2.87-5.86-2.87-5.86h6A2.61,2.61,0,0,0,22.5,11.3a2.94,2.94,0,0,0-.05-.51L20.89,3A1.91,1.91,0,0,0,19,1.48H11.25a9.13,9.13,0,0,0-4,1h0a9.08,9.08,0,0,1-4.06,1H.5"></path></svg>`
             }
-        }
-           
+        }   
     }
-
-
 })
 
 app.get('/', checkNotAuthenticated, function(req, res) {
@@ -143,7 +141,7 @@ app.get('/', checkNotAuthenticated, function(req, res) {
 })
 
 app.get('/signup', checkNotAuthenticated, function(req, res) {
-    res.sendFile(__dirname + '\\' + 'signup.html');
+    res.render('signup');
 });
 
 app.post('/signup', checkNotAuthenticated, async function(req, res) {
@@ -173,14 +171,17 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     failureFlash: true
 }));
 
+app.get('/about', function(req, res) {
+
+    res.render('about');
+});
+
 app.get('/forum', checkAuthenticated, async function(req,res) {
 
     const user = req.user;
 
     const filter = req.query.filter;
     var post = await Post.find({}).sort({ datePosted: -1});
-    var allId = post.map(post => post.user.userId);
-    var users = await User.find({ _id: {$in: allId}});
 
     if(filter === "new") {
         post = await Post.find({}).sort({ datePosted: -1});
@@ -191,14 +192,54 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     else if(filter === "top") {
         post = await Post.find({}).sort({ upVote: -1});
     }
+
+    var allId = post.map(post => post.userId);
+    var users = await User.find({ _id: {$in: allId}});
     
-    const liked = await Liked.find({userId: user.id});
-    const disliked = await Disliked.find({userId: user.id});
+    const liked = await Liked.find({userId: user._id});
+    const disliked = await Disliked.find({userId: user._id});
 
     res.render('forum', { post, user, users, liked, disliked})
 });
 
-app.delete('/logout', function(req, res) {
+app.get('/post/:id/add', checkAuthenticated, async function(req, res) {
+
+    const type = req.params.icon;
+    const id = req.param.id;
+    const user = req.user;
+
+    console.log(type);
+
+    switch (type) {
+        case "up": {
+            await Liked.create({postId: id, userId: user._id })
+        }
+        case "down": {
+            await Disliked.create({postId: id, userId: user._id })
+        }
+    }
+    res.redirect('/forum');
+});
+
+app.get('/post/:id/remove', checkAuthenticated, async function(req, res) {
+
+    const type = req.params.icon;
+    const id = req.param.id;
+    const user = req.user;
+
+    switch (type) {
+        case "up": {
+            await Liked.findOneAndDelete({postId: id, userId: user._id})
+        }
+        case "down": {
+            await Disliked.findOneAndDelete({postId: id, userId: user._id })
+        }
+    }
+    res.redirect('/forum');
+});
+
+
+app.delete('/logout', checkAuthenticated, function(req, res) {
     req.logOut((err) => {
         if (err) {
           return next(err);
@@ -260,7 +301,7 @@ app.post('/settings/submit', checkAuthenticated, async function(req, res) {
 
 });
 
-app.get('/post/:id', async function(req, res) {
+app.get('/post/:id', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = req.user
     const post = await Post.findById(id);
@@ -268,7 +309,7 @@ app.get('/post/:id', async function(req, res) {
 
     const allId = comment.map(c => c.user.userId);
 
-    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
     const liked = await Liked.find({postId: id});
     const disliked = await Disliked.find({postId: id})
@@ -276,19 +317,19 @@ app.get('/post/:id', async function(req, res) {
     res.render('post', { post, comment, user, users, liked, disliked });
 });
 
-app.get('/post/:id/edit', async function(req, res) {
+app.get('/post/:id/edit', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = req.user
     const post = await Post.findById(id);
     const comment = await Comment.find({postId: id});
 
     const allId = comment.map(c => c.user.userId);
-    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
     res.render('edit-post', { post, comment, user, users});
 });
 
-app.post('/post/:id/edit', async function(req, res) {
+app.post('/post/:id/edit', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = req.user
     const post = await Post.findById(id);
@@ -300,7 +341,7 @@ app.post('/post/:id/edit', async function(req, res) {
     res.redirect(`/post/${id}`);
 });
 
-app.get('/post/:id/delete', async function(req, res) {
+app.get('/post/:id/delete', checkAuthenticated, async function(req, res) {
 
     const id = req.params.id;   
 
@@ -309,7 +350,7 @@ app.get('/post/:id/delete', async function(req, res) {
     res.redirect('/forum');
 });
 
-app.post('/post/:id/comment', async function(req, res) {
+app.post('/post/:id/comment', checkAuthenticated, async function(req, res) {
 
     const id = req.params.id;
     const user = req.user;
@@ -325,7 +366,7 @@ app.post('/post/:id/comment', async function(req, res) {
     res.redirect(`/post/${id}`);
 })
 
-app.get('/post/:id1/comment/:id2/edit', async function(req, res) {
+app.get('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
 
     const postId = req.params.id1;
     const commId = req.params.id2;
@@ -334,7 +375,7 @@ app.get('/post/:id1/comment/:id2/edit', async function(req, res) {
     const comment = await Comment.find({postId: postId});
 
     const allId = comment.map(c => c.user.userId);
-    const users = await User.find({ $or: [{_id: post.user.userId}, {_id: {$in: allId}}]});
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
     const liked = await Liked.find({postId: postId, userId: user.id});
     const disliked = await Disliked.find({postId: postId, userId: user.id})
@@ -342,7 +383,7 @@ app.get('/post/:id1/comment/:id2/edit', async function(req, res) {
     res.render('edit-comment', {  post, comment, user, users, liked, disliked, editCom: commId})
 });
 
-app.post('/post/:id1/comment/:id2/edit', async function(req, res) {
+app.post('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
 
     const postId = req.params.id1;
     const commId = req.params.id2;
@@ -353,7 +394,7 @@ app.post('/post/:id1/comment/:id2/edit', async function(req, res) {
     res.redirect('/post/' + postId);
 });
 
-app.get('/post/:id1/comment/:id2/delete', async function(req, res) {
+app.get('/post/:id1/comment/:id2/delete', checkAuthenticated, async function(req, res) {
 
     const postId = req.params.id1;
     const commId = req.params.id2;
@@ -363,7 +404,7 @@ app.get('/post/:id1/comment/:id2/delete', async function(req, res) {
     res.redirect('/post/' + postId);
 });
 
-app.get('/user/:id',async function(req, res) {
+app.get('/user/:id', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = await User.findById(id);
     const post = await Post.find({'user.userId': id});
@@ -379,7 +420,7 @@ app.get('/user/:id/edit', checkAuthenticated, async function(req, res) {
     res.render('edit_profile', { user });
 });
 
-app.post('/user/:id/edit', async function(req, res) {
+app.post('/user/:id/edit', checkAuthenticated, async function(req, res) {
        
     const id = req.params.id;
     const user = req.user;
@@ -401,7 +442,7 @@ app.post('/user/:id/edit', async function(req, res) {
     res.redirect(`/user/`+id);
 });
 
-app.post('/user/:id/delete', async function(req, res) {
+app.post('/user/:id/delete', checkAuthenticated, async function(req, res) {
 
     const id = req.params.id;
 

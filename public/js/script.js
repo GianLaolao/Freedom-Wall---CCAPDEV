@@ -30,28 +30,31 @@ $("#b-confpass").click(function() {
   change(pass, this, img);
 });
 
-function thumbClick(icon, num, type) {
+function thumbClick(icon, id, type, name) {
   var color = icon.css('fill');
 
   if (color === 'rgb(255, 255, 255)') {
     icon.css('fill', '#00703C');
     switch (type) {
       case 0:
-        num.text(parseInt(num.text())-1);
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+        window.location.href = `/post/${id}/remove?icon=${name}`;
         break;
       case 1:
-        num.text(parseInt(num.text())+1);
+        window.location.href = `/post/${id}/add?icon=${name}`;
+        break;
     }
-    
   }
   else {
     icon.css('fill', 'white');
     switch (type) {
       case 0:
-        num.text(parseInt(num.text())+1);
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+        window.location.href = `/post/${id}/add?icon=${name}`;
         break;
       case 1:
-        num.text(parseInt(num.text())-1);
+        window.location.href = `/post/${id}/remove?icon=${name}`;
+        break;
     }
   }
   return;
@@ -61,13 +64,12 @@ $(".forum-container").on('click', '.thumb-up', function() {
     var div = $(this).closest('.forum');
     var downVoteIcon = div.find('.thumb-down').find('path');
     var upVoteIcon = $(this).find('path');
-    var upNum = div.find('.up-num');
-    var downNum = div.find('.down-num');
+    var id = div.attr('id');
 
     if(downVoteIcon.css('fill') === 'rgb(255, 255, 255)') {
-      thumbClick(downVoteIcon, downNum, 0)
+      thumbClick(downVoteIcon, id, 0, "down")
     }
-    thumbClick(upVoteIcon, upNum, 0);
+    thumbClick(upVoteIcon, id, 0, "up");
   
 });
 
@@ -75,38 +77,35 @@ $(".forum-container").on('click', ".thumb-down",function() {
   var div = $(this).closest('.forum');
   var downVoteIcon = $(this).find('path'); 
   var upVoteIcon = div.find('.thumb-up path');
-  var upNum = div.find('.up-num');
-  var downNum = div.find('.down-num');
+  var id = div.attr('id');
 
   if (upVoteIcon.css('fill') === 'rgb(255, 255, 255)') {
-    thumbClick(upVoteIcon, upNum, 0)
+    thumbClick(upVoteIcon, id, 0, "up")
   }
-  thumbClick(downVoteIcon, downNum, 0);
+  thumbClick(downVoteIcon, id, 0, "down");
 });
 
     
 $(".like").click(function() {
   var icon = $("#like-icon").find('path');
-  var upNum = $("#up-num");
-  var downNum = $("#down-num");
+  var postId = $(this).closest('.post').attr('id');
   var dislikeIcon = $("#dislike-icon").find('path');
 
   if(dislikeIcon.css('fill') === 'rgb(0, 112, 60)') {
-    thumbClick(dislikeIcon, downNum, 1)
+    thumbClick(dislikeIcon, postId, 1, "down")
   }
-  thumbClick(icon, upNum, 1);
+  thumbClick(icon, postId, 1, "up");
 });
 
 $(".dislike").click(function() {
   var icon = $("#dislike-icon").find('path');
-  var upNum = $("#up-num");
-  var downNum = $("#down-num");
+  var postId = $(this).closest('.post').attr('id');
   var likeIcon = $("#like-icon").find('path');
   
   if(likeIcon.css('fill') === 'rgb(0, 112, 60)') {
-    thumbClick(likeIcon, upNum, 1);
+    thumbClick(likeIcon, postId, 1, "up");
   }
-  thumbClick(icon, downNum, 1);
+  thumbClick(icon, postId, 1, "down");
 });
 
 $("#menu-icon").click(function() {

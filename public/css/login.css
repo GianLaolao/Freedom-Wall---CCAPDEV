@@ -7,6 +7,19 @@ body {
     font-family: 'Avenir Next', sans-serif;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:active {
+    color: white;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .header {
     margin: 80px 50px 0px;
     width: 380px;
@@ -178,4 +191,12 @@ body {
     top: 30px;
     align-self: center;
     margin: 0px;
+}
+
+#about {
+    position: fixed;
+    color: gray;
+    font-size: 20px;
+    top: 80%;
+    left: 46%;
 }

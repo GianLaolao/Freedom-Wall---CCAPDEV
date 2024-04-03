@@ -15,8 +15,8 @@
         <div class="post" id="{{post._id}}">
             <div class="top">
                 <div class="user-info">
-                    <a href="#" ><img id="profile-pic" src="/images/{{displayUser post.user.userId users 1}}" alt="profile-pic"></a>
-                    <p id="username">{{displayUser post.user.userId users 2}}</p>
+                    <a href="#" ><img id="profile-pic" src="/images/{{displayUser post.userId users 1}}" alt="profile-pic"></a>
+                    <p id="username">{{displayUser post.userId users 2}}</p>
                 </div>
                 <span id="date">{{formatDate post.datePosted}}</span>
                 <div class="tag">
@@ -35,24 +35,15 @@
             </form>
         </div>
         <div class="comment-posts">
-            <form action="/post/{{post._id}}/comment" method="post" class="add-comment-panel">
-                <textarea id="comment-textarea" name="content" placeholder="Add a comment" row="auto" cols="auto"></textarea>
-                <button type="submit" id="add-comment-button">
-                    Comment
-                    <svg id="button-add-comment" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" fill="#00703E"/>
-                    </svg>
-                </button>
-            </form>
             <span id="line"></span>
             {{#each comment}}
                 <div class="comment-post">
                     <div class="user-info">
-                        <a href="/user/{{this.user.userId}}"><img id="profile-pic" src='/images/{{displayUser this.user.userId ../users 1}}' alt="profile-pic"></a>
-                        <p id="username">{{displayUser this.user.userId ../users 2}}</p>
+                        <a href="/user/{{this.userId}}"><img id="profile-pic" src='/images/{{displayUser this.userId ../users 1}}' alt="profile-pic"></a>
+                        <p id="username">{{displayUser this.userId ../users 2}}</p>
                     </div>
                     <p contenteditable="false" id="comment">{{this.content}}</p>
-                    {{#if (eq this.user.userId user._id)}}
+                    {{#if (eq this.userId user._id)}}
                     <div class="action-icons">
                             <div class="edit-comm">
                                 <div id="edit-icon">
@@ -73,7 +64,9 @@
                     </div>
                     {{/if}}
                 </div>
-            {{/each}}        
+            {{/each}}  
+        </div>
+    </div>      
     <script src="/js/script.js"></script>
     <script>
         var textarea = $("#post-textarea");

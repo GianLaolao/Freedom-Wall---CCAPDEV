@@ -34,26 +34,24 @@ function thumbClick(icon, id, type, name) {
   var color = icon.css('fill');
 
   if (color === 'rgb(255, 255, 255)') {
-    icon.css('fill', '#00703C');
     switch (type) {
       case 0:
         sessionStorage.setItem('scrollPosition', window.scrollY);
-        window.location.href = `/post/${id}/remove?icon=${name}`;
+        window.location.href = `/post/${id}/remove?icon=${name}&l=forum`;
         break;
       case 1:
-        window.location.href = `/post/${id}/add?icon=${name}`;
+        window.location.href = `/post/${id}/add?icon=${name}&1=post`;
         break;
     }
   }
   else {
-    icon.css('fill', 'white');
     switch (type) {
       case 0:
         sessionStorage.setItem('scrollPosition', window.scrollY);
-        window.location.href = `/post/${id}/add?icon=${name}`;
+        window.location.href = `/post/${id}/add?icon=${name}&l=forum`;
         break;
       case 1:
-        window.location.href = `/post/${id}/remove?icon=${name}`;
+        window.location.href = `/post/${id}/remove?icon=${name}&l=post`;
         break;
     }
   }

@@ -70,7 +70,6 @@ hbs.registerHelper('eq', function (user, curUser) {
 });
 
 hbs.registerHelper('displayUser', function(userId, users, type) {
-
     const user = users.find(u => u._id === userId);
     switch (type) {
         case 1: return user.profile;
@@ -202,41 +201,6 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     res.render('forum', { post, user, users, liked, disliked})
 });
 
-app.get('/post/:id/add', checkAuthenticated, async function(req, res) {
-
-    const type = req.params.icon;
-    const id = req.param.id;
-    const user = req.user;
-
-    console.log(type);
-
-    switch (type) {
-        case "up": {
-            await Liked.create({postId: id, userId: user._id })
-        }
-        case "down": {
-            await Disliked.create({postId: id, userId: user._id })
-        }
-    }
-    res.redirect('/forum');
-});
-
-app.get('/post/:id/remove', checkAuthenticated, async function(req, res) {
-
-    const type = req.params.icon;
-    const id = req.param.id;
-    const user = req.user;
-
-    switch (type) {
-        case "up": {
-            await Liked.findOneAndDelete({postId: id, userId: user._id})
-        }
-        case "down": {
-            await Disliked.findOneAndDelete({postId: id, userId: user._id })
-        }
-    }
-    res.redirect('/forum');
-});
 
 
 app.delete('/logout', checkAuthenticated, function(req, res) {
@@ -286,7 +250,7 @@ app.get('/forum/search', checkAuthenticated, async function(req, res) {
         res.redirect('/forum');
     }
 
-    const allId = post.map(p => p.user.userId);
+    const allId = post.map(p => p.userId);
     const users = await User.find({_id: {$in: allId}});
 
     const liked = await Liked.find({userId: user.id});
@@ -307,7 +271,7 @@ app.get('/post/:id', checkAuthenticated, async function(req, res) {
     const post = await Post.findById(id);
     const comment = await Comment.find({postId: id });
 
-    const allId = comment.map(c => c.user.userId);
+    const allId = comment.map(c => c.userId);
 
     const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
@@ -323,7 +287,7 @@ app.get('/post/:id/edit', checkAuthenticated, async function(req, res) {
     const post = await Post.findById(id);
     const comment = await Comment.find({postId: id});
 
-    const allId = comment.map(c => c.user.userId);
+    const allId = comment.map(c => c.userId);
     const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
     res.render('edit-post', { post, comment, user, users});
@@ -366,6 +330,56 @@ app.post('/post/:id/comment', checkAuthenticated, async function(req, res) {
     res.redirect(`/post/${id}`);
 })
 
+app.get('/post/:id/add', checkAuthenticated, async function(req, res) {
+
+    const type = req.query.icon;
+    const id = req.params.id;
+    const user = req.user;
+    const loc = req.query.l;
+
+    switch (type) {
+        case "up": {
+            await Liked.create({postId: id, userId: user._id })
+            break;
+        }
+        case "down": {
+            await Disliked.create({postId: id, userId: user._id })
+            break;
+        }
+    }
+    if (loc === 'forum') {
+        res.redirect('/forum');
+    }
+    else {
+        res.redirect(`/post/${id}`)
+    }
+});
+
+app.get('/post/:id/remove', checkAuthenticated, async function(req, res) {
+
+    const type = req.query.icon;
+    const id = req.params.id;
+    const user = req.user;
+    const loc = req.query.l;
+
+    switch (type) {
+        case "up": {
+            await Liked.findOneAndDelete({postId: id, userId: user._id})
+            break;
+        }
+        case "down": {
+            await Disliked.findOneAndDelete({postId: id, userId: user._id })
+            break;
+        }
+    }
+    if (loc === 'forum') {
+        res.redirect('/forum');
+    }
+    else {
+        res.redirect(`/post/${id}`)
+    }
+});
+
 app.get('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
 
     const postId = req.params.id1;
@@ -374,7 +388,7 @@ app.get('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, 
     const post = await Post.findById(postId);
     const comment = await Comment.find({postId: postId});
 
-    const allId = comment.map(c => c.user.userId);
+    const allId = comment.map(c => c.userId);
     const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
 
     const liked = await Liked.find({postId: postId, userId: user.id});
@@ -407,7 +421,7 @@ app.get('/post/:id1/comment/:id2/delete', checkAuthenticated, async function(req
 app.get('/user/:id', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = await User.findById(id);
-    const post = await Post.find({'user.userId': id});
+    const post = await Post.find({userId: id});
     const curUser = req.user;
 
     res.render('profile', { user, post, curUser });
@@ -448,8 +462,8 @@ app.post('/user/:id/delete', checkAuthenticated, async function(req, res) {
 
     await Liked.deleteMany({user: id});
     await Disliked.deleteMany({user: id});
-    await Comment.deleteMany({'user.userId': id});
-    await Post.deleteMany({'user.userId': id});
+    await Comment.deleteMany({userId: id});
+    await Post.deleteMany({userId: id});
     await User.findByIdAndDelete(id);
 
     res.redirect('/');

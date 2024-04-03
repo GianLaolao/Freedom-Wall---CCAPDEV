@@ -440,18 +440,25 @@ app.post('/user/:id/edit', checkAuthenticated, async function(req, res) {
     const user = req.user;
     const username = req.body.username;
     var bio = req.body.bio;
-    const image = req.files.profilePicInput;
+    let image;
+    let imageName;
+
+    if (req.files && req.files.profilePicInput) {
+        image = req.files.profilePicInput;
+        image.mv(path.resolve(__dirname,'public/images', image.name),(error) => {
+            if (error)
+            {
+                console.log ("Error!")
+            }
+        });
+        imageName = image.name;
+    } else {
+        imageName,e = user.profile;
+    }
 
     bio = bio.trim().length === 0 ? "This is my profile." : bio;
 
-    image.mv(path.resolve(__dirname,'public/images', image.name),(error) => {
-        if (error)
-        {
-            console.log ("Error!")
-        }
-    });
-
-    await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, profile: image.name});
+    await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, profile: imageName});
        
     res.redirect(`/user/`+id);
 });

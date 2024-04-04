@@ -77,9 +77,9 @@ hbs.registerHelper('displayUser', function(userId, users, type) {
     } 
 })
 
-hbs.registerHelper('color', function (data, post, type) {
+hbs.registerHelper('color', function (data, user, post, type) {
 
-    const inData = data.some(d => d.postId == post);
+    const inData = data.some(d => (d.postId == post && d.userId == user._id));
 
     switch(type) {
         case "up": {
@@ -195,8 +195,8 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     var allId = post.map(post => post.userId);
     var users = await User.find({ _id: {$in: allId}});
     
-    const liked = await Liked.find({userId: user._id});
-    const disliked = await Disliked.find({userId: user._id});
+    const liked = await Liked.find();
+    const disliked = await Disliked.find();
 
     res.render('forum', { post, user, users, liked, disliked})
 });
@@ -212,24 +212,6 @@ app.delete('/logout', checkAuthenticated, function(req, res) {
     res.redirect('/');
 })
 
-    // const email = req.body.email;
-    // const password = req.body.password;
-
-    // const user = await User.find({email: email, password: password })
-    //     if (user.length > 0) {
-    //         currentUser = user[0];
-    //         res.redirect('/forum');
-    //         console.log("User confirmed");
-    //     }
-    //     else {
-    //         res.status(401).send("<h1>Invalid Email or Password.</h1>");
-    //     }
-
-//         currentUser = await User.findById(1001);
-
-//         res.redirect('/forum');
-// }); 
-
 app.get('/forum/search', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
@@ -242,7 +224,8 @@ app.get('/forum/search', checkAuthenticated, async function(req, res) {
             $or: [
                 { "user.username": { $regex: query, $options: 'i' } },
                 { "title": { $regex: query, $options: 'i' } },
-                { "content": { $regex: query, $options: 'i' } }
+                { "content": { $regex: query, $options: 'i' } },
+                { "tag": { $regex: query, $options: 'i' } }
             ]
         }).sort({dateCreated: -1});
     }
@@ -269,7 +252,7 @@ app.get('/post/:id', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = req.user
     const post = await Post.findById(id);
-    const comment = await Comment.find({postId: id });
+    const comment = await Comment.find({postId: id});
 
     const allId = comment.map(c => c.userId);
 
@@ -325,7 +308,7 @@ app.post('/post/:id/comment', checkAuthenticated, async function(req, res) {
     const newId = lastId ? Number(lastId.id) + 1 : 3000; 
 
 
-    await Comment.create({_id: newId, postId: id, user: { userId: user.id, username: user.username}, content: comment})
+    await Comment.create({_id: newId, postId: id, userId: user.id, content: comment})
 
     res.redirect(`/post/${id}`);
 })
@@ -486,10 +469,6 @@ app.get('/create-post', checkAuthenticated,  async function(req, res) {
 
 app.post('/create-post', checkAuthenticated, async function(req, res) {
 
-    console.log(req.body.title);
-    console.log(req.body.content);
-    console.log(req.body.tag_type);
-
     const user = req.user;
     const title = req.body.title;
     const post = req.body.content;
@@ -498,8 +477,7 @@ app.post('/create-post', checkAuthenticated, async function(req, res) {
     const lastId = await Post.findOne().sort({ _id: -1 });
     const newId = lastId ? Number(lastId.id) + 1 : 2000; 
 
-    await Post.create({_id: newId, user: { userId: user.id, username: user.username}, title: title, 
-                        content: post, tag: tag});
+    await Post.create({_id: newId, userId: user.id, title: title, content: post, tag: tag});
 
     res.redirect('/forum');
 })

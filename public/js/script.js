@@ -30,6 +30,12 @@ $("#b-confpass").click(function() {
   change(pass, this, img);
 });
 
+$(".comment-cont").on('click', function() {
+  const comment = $(this);
+
+  comment.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center'});
+});
+
 function thumbClick(icon, id, type, name) {
   var color = icon.css('fill');
 
@@ -115,11 +121,6 @@ $("#menu-icon").click(function() {
   else {
     menu.css('display', 'none');
   }
-});
-
-$("#post_btn").on('submit', function() {
-  
-   alert("Successfully posted.")
 });
 
 $("#o-pass").click(function() {
@@ -234,9 +235,14 @@ $(".edit-comm").on('click', function() {
     sessionStorage.setItem('scrollPosition', window.scrollY);
 });
 
+$(".comm-btn").on('click', function() {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+})
+
 $(".m-log-out").on('click', function() {
   $("#logout_form").submit();
 });
+
 
 
 

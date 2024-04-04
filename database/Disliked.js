@@ -29,6 +29,6 @@ async function refresh() {
     }
 };
 
-refresh();
+// refresh();
 
 module.exports = Disliked

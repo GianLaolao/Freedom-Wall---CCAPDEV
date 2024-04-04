@@ -24,12 +24,12 @@ const User = mongoose.model('User', UserSchema)
 
 async function refresh() {
   try {
-      // await User.deleteMany({});
+      await User.deleteMany({});
       console.log("Refreshed schema.");
 
       await User.insertMany([
-        // { _id: 1001,  username: 'Mr. Green', bio: 'I love Programming and making Websites. <br>I also love the color Green.', 
-        //   email: 'iam_green123@gmail.com', password: '1HateYellow',  birthday: new Date(1900, 9, 10), dateCreated: new Date(2024, 1, 20)},
+        { _id: 1001,  username: 'Mr. Green', bio: 'I love Programming and making Websites. <br>I also love the color Green.', 
+          email: 'iam_green123@gmail.com', password: '1HateYellow',  birthday: new Date(1900, 9, 10), dateCreated: new Date(2024, 1, 20)},
         { _id: 1002,  username: 'not Walter White', bio: 'I am not Walter Hartwell White. <br>I do not live At 308 Negra Aroya Lane, Albuquerque, New Mexico, 87104', 
           email: 'ih8_chem1stry@gmail.com', password: '1amth30newh0knock5',  birthday: new Date(1958, 8, 7), dateCreated: new Date(2024, 0, 20)},
         { _id: 1003,  username: 'Elon Musk', bio: 'Genius Billionaire Philanthrophist but no armor', 
@@ -57,6 +57,6 @@ async function refresh() {
   }
 };
 
-refresh();
+// refresh();
 
 module.exports = User

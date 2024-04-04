@@ -91,7 +91,7 @@
                         <p id="username">{{displayUser this.userId ../users 2}}</p>
                     </div>
                     <p id="comment">{{this.content}}</p>
-                    {{#if (eq this.user.userId ../user._id)}}
+                    {{#if (eq this.userId ../user._id)}}
                         <div class="action-icons">
                             <a href="/post/{{../post.id}}/comment/{{this.id}}/edit"><div class="edit-comm">
                                 <div id="edit-icon">
@@ -116,5 +116,14 @@
         </div> 
     </div>    
     <script src="/js/script.js"></script>
+    <script>
+         window.addEventListener('load', function() {
+            var scrollPosition = sessionStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                window.scrollTo(0, scrollPosition);
+                sessionStorage.removeItem('scrollPosition'); 
+            }   
+        });
+    </script>
 </body>
 </html>

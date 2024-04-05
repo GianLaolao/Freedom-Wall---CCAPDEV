@@ -15,16 +15,16 @@
          <div class="pfp-top">
             <div class="pfp-left">
                 <div class="profile-pic">
-                    <a href="#"><img src="/images/{{{user.profile}}}"  id="profile" alt="profile-pic"></a>
+                    <a href="#"><img src="/images/{{{showUser.profile}}}"  id="profile" alt="profile-pic"></a>
                 </div>
                 <div class="username">
-                    <h1>{{user.username}}</h1>
+                    <h1>{{showUser.username}}</h1>
                 </div>
             </div>
             <div class="pfp-right">
                 <div class="info">
-                    <span class="dates">Birthday: {{formatDate user.birthday}}</span> 
-                    <span class="dates">Joined: {{formatDate user.dateCreated}}</span>
+                    <span class="dates">Birthday: {{formatDate showUser.birthday}}</span> 
+                    <span class="dates">Joined: {{formatDate showUser.dateCreated}}</span>
                 </div>
                 {{#if (eq user._id curUser._id)}}
                 <div class="set-pfp">
@@ -43,7 +43,7 @@
         </div>
         <div class="pfp-bot">
             <div class="bio">
-                <h3>{{{user.bio}}}
+                <h3>{{{showUser.bio}}}
                 </h3>
             </div>
         </div> 
@@ -56,8 +56,8 @@
             <div class="post">
                 <div class="top">
                     <div class="user-info">
-                        <a href="#"><img src="/images/{{../user.profile}}" id="postpfp"></a>
-                        <p id="username">{{../user.username}}</p>
+                        <a href="#"><img src="/images/{{../showUser.profile}}" id="postpfp"></a>
+                        <p id="username">{{../showUser.username}}</p>
                     </div>
                     <div class="tag">
                         <span>{{this.tag}}</span>

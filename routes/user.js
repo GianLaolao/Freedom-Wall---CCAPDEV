@@ -12,11 +12,11 @@ const Disliked = require('../database/Disliked');
 
 router.get('/:id', checkAuthenticated, async function (req, res) {
     const id = req.params.id;
-    const user = await User.findById(id);
+    const showUser = await User.findById(id);
     const post = await Post.find({userId: id});
-    const curUser = req.user;
+    const user = req.user;
 
-    res.render('profile', { user, post, curUser });
+    res.render('profile', { showUser, post, user });
 });
 
 router.get('/:id/edit', checkAuthenticated, function (req, res) {

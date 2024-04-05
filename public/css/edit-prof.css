@@ -118,13 +118,15 @@ body {
 #green-pen2 {
     position: absolute;
     left: 8%;
+    height: 30px;
+    width: 30px;
 }
 
 #pen-pfp     {
     height: 30px;
     width: 30px;
     position: absolute;
-    left: 70px;
+    left: 92px;
 }
 
 .username-container img {

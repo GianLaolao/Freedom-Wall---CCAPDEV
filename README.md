@@ -6,9 +6,7 @@ Packages:
 npm install mongoose express hbs express-flash express-session express-fileupload method-override passport passport-local bcrypt dotenv nodemon 
 
 
-Create file name ".env"
+Create file ".env"
 Input the ff:
 
-SESSION_SECRET=put random characters here
-PORT=3000
-MONGO_URL=[mongodb database URL]
+SESSION=SECRET=[put random characters]

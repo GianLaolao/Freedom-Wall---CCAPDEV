@@ -18,6 +18,14 @@ a:active {
     color: white;
 }
 
+.clicked {
+    fill: white;
+}
+
+.notClicked {
+    fill: #00703C;
+}
+
 .page {
     display: flex;
     position: relative;

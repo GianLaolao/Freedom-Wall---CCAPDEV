@@ -11,8 +11,8 @@
     <div class="page">
         <div class="main">
             <div class="create">
-                <a  ="/user/{{user.id}}"><img class="profile" id="pfp" src="/images/pfp.jpg" alt="profile-pic"></a>
-                <a href="/create-post">
+                <a  ="/user/{{user.id}}"><img class="profile" id="pfp" src="/images/{{user.profile}}" alt="profile-pic"></a>
+                <a href="post/create-post">
                     <div class="create-bar">
                         <img src="/images/pen-icon.svg" id="pen-icon">
                         <span>Create a Post</span>
@@ -29,35 +29,38 @@
                     </select>
                 </form>
                 {{#each post}}
-                <div class="forum">
-                    <div class="top">
-                        <div class="top-left">
-                            <a href="/user/{{this.userId.userId}}"><img src="/images/pfp.jpg" class="forum-pfp"></a>
-                            <span> {{this.user.username}}</span>
-                            <span id="date">{{formatDate this.datePosted}}</span>
+                    <div class="forum" id="{{this.id}}">
+                        <div class="top">
+                            <div class="top-left">
+                                <a href="/user/{{this.userId}}">
+                                <img src="/images/{{displayUser this.userId ../users 1}}" class="forum-pfp"></a>
+                                <span> {{displayUser this.userId ../users 2}}</span>
+                                <span id="date">{{formatDate this.datePosted}}</span>
+                            </div>
+                            <div class="tag">
+                                <span>{{this.tag}}</span>
+                            </div>
                         </div>
-                        <div class="tag">
-                            <span>{{this.tag}}</span>
+                            <a href="/post/{{this._id}}">
+                                <h1 class="title">{{this.title}}</h1>
+                            </a>
+                        <div class="action">
+                            <a href="/post/{{this.id}}">
+                                <div class="comment-cont">
+                                    <svg class="icon comment" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637642e7c3a86d32eae6f1b1-1{fill:none;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637642e7c3a86d32eae6f1b1-1" d="M1.5,5.3v9.54a3.82,3.82,0,0,0,3.82,3.82H7.23v2.86L13,18.66h5.73a3.82,3.82,0,0,0,3.82-3.82V5.3a3.82,3.82,0,0,0-3.82-3.82H5.32A3.82,3.82,0,0,0,1.5,5.3Z"></path></svg>
+                                    <span class="action-text">Comment</span>
+                                </div>
+                            </a>
+                            <div class="up">
+                                {{{color ../liked ../user this._id "up"}}}
+                                <span class="action-text up-num">{{forumNum ../liked this.id}}</span>
+                            </div>
+                            <div class="down">
+                                {{{color ../disliked ../user this._id "down"}}}
+                                <span class="action-text down-num">{{forumNum ../disliked this.id}}</span>
+                            </div>
                         </div>
                     </div>
-                        <a href="/post/{{this._id}}">
-                            <h1 class="title">{{this.title}}</h1>
-                        </a>
-                    <div class="action">
-                        <div class="comment-cont">
-                            <svg class="icon comment" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="24" height="24" color="#FFFFFF"><defs><style>.cls-637642e7c3a86d32eae6f1b1-1{fill:none;stroke:currentColor;stroke-miterlimit:10;}</style></defs><path class="cls-637642e7c3a86d32eae6f1b1-1" d="M1.5,5.3v9.54a3.82,3.82,0,0,0,3.82,3.82H7.23v2.86L13,18.66h5.73a3.82,3.82,0,0,0,3.82-3.82V5.3a3.82,3.82,0,0,0-3.82-3.82H5.32A3.82,3.82,0,0,0,1.5,5.3Z"></path></svg>
-                            <span class="action-text">Comment</span>
-                        </div>
-                        <div class="up">
-                            {{{color "a" ../liked this._id}}}
-                            <span class="action-text up-num">{{this.upVote}}</span>
-                        </div>
-                        <div class="down">
-                            {{{color "b" ../disliked this._id}}}
-                            <span class="action-text down-num">{{this.downVote}}</span>
-                        </div>
-                    </div>
-                </div>
                 {{/each}}
             </div>
         </div>
@@ -65,15 +68,21 @@
     <script src="/js/script.js"></script>
     <script>
         var filterValue = new URLSearchParams(window.location.search).get('filter');
-        console.log(filterValue);
 
         if(filterValue === null) {
             filterValue = 'new'
         }
         $('#filter').val(filterValue);
+
+        window.addEventListener('load', function() {
+            var scrollPosition = sessionStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                window.scrollTo(0, scrollPosition);
+                sessionStorage.removeItem('scrollPosition'); 
+            }   
+        });
     </script>
     <script>
-        
     </script>
   </body>
 </html>

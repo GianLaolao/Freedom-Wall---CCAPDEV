@@ -155,3 +155,8 @@ body {
     background-color: white;
     border-color: #00703C;
 }
+
+#error {
+    color: red;
+    margin: 20px 0px 0px 0px; 
+}

@@ -17,6 +17,10 @@ a:active {
     color: white;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 .profile-section {
     position: relative;
     font-family: Arial, Helvetica, sans-serif;
@@ -78,19 +82,17 @@ a:active {
 }
 
 .info {
-    position: fixed;
+    position: static;
     display: flex;
     flex-direction: row;
     width: 500px;
     gap: 50px;
-    left: 900px;
-    top: 130px;
+    margin-top: 5px;
+    margin-left: 100px;
 }
 
 .set-pfp {
-    position: fixed;
-    left: 1320px; 
-    top: 125px;
+    position: static;
 }
 
 .set-pfp:hover {

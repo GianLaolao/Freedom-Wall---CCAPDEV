@@ -16,7 +16,7 @@ npm init -y
 
 SESSION=SECRET=[put random characters]\
 PORT=[port number]\
-MONGODB_URL=[mongodb url as a string]
+MONGODB_URL=[mongodb database connection string]
 
 ### To run, type the following in the terminal: 
     npm start

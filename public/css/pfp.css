@@ -82,19 +82,17 @@ a:hover {
 }
 
 .info {
-    position: fixed;
+    position: static;
     display: flex;
     flex-direction: row;
     width: 500px;
     gap: 50px;
-    left: 900px;
-    top: 130px;
+    margin-top: 5px;
+    margin-left: 100px;
 }
 
 .set-pfp {
-    position: fixed;
-    left: 1320px; 
-    top: 125px;
+    position: static;
 }
 
 .set-pfp:hover {

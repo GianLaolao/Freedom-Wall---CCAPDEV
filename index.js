@@ -3,12 +3,15 @@ if(process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/freedomWallDB');
+const { sessionKey, envPort, dbURL  } = require('./config');
 
 const express = require('express');
 const app = new express();
 
+const mongoose = require('mongoose');
+mongoose.connect(dbURL);
+
+const PORT = envPort;
 
 const fileUpload = require('express-fileupload');
 const path = require('path');
@@ -26,7 +29,7 @@ app.use(express.urlencoded( {extended: true}));
 app.use(express.static(__dirname + '/public'));
 app.use(flash());
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: sessionKey,
     resave: false,
     saveUninitialized: false
 }))
@@ -34,6 +37,7 @@ app.use(fileUpload());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
+
 
 const User = require('./database/User');
 const Post = require('./database/Post');
@@ -47,14 +51,11 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views/layouts'));
 hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 
-// const userRouter = require('/routes/users');
-// app.use('/user', userRouter);
+const userRouter = require('./routes/user');
+app.use('/user', userRouter);
 
-// const postRouter = require('/routes/posts');
-// app.use('/post', postRouter);
-
-// const commentRouter = require('/routes/comments');
-// app.use('/comment', commentRouter);
+const postRouter = require('./routes/post');
+app.use('/post', postRouter);
 
 
 hbs.registerHelper('toString', function(objectId) {
@@ -201,8 +202,6 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     res.render('forum', { post, user, users, liked, disliked})
 });
 
-
-
 app.delete('/logout', checkAuthenticated, function(req, res) {
     req.logOut((err) => {
         if (err) {
@@ -248,240 +247,6 @@ app.post('/settings/submit', checkAuthenticated, async function(req, res) {
 
 });
 
-app.get('/post/:id', checkAuthenticated, async function(req, res) {
-    const id = req.params.id;
-    const user = req.user
-    const post = await Post.findById(id);
-    const comment = await Comment.find({postId: id});
-
-    const allId = comment.map(c => c.userId);
-
-    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
-
-    const liked = await Liked.find({postId: id});
-    const disliked = await Disliked.find({postId: id})
-
-    res.render('post', { post, comment, user, users, liked, disliked });
-});
-
-app.get('/post/:id/edit', checkAuthenticated, async function(req, res) {
-    const id = req.params.id;
-    const user = req.user
-    const post = await Post.findById(id);
-    const comment = await Comment.find({postId: id});
-
-    const allId = comment.map(c => c.userId);
-    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
-
-    res.render('edit-post', { post, comment, user, users});
-});
-
-app.post('/post/:id/edit', checkAuthenticated, async function(req, res) {
-    const id = req.params.id;
-    const user = req.user
-    const post = await Post.findById(id);
-    const content = req.body.content;
-    
-    await Post.updateOne({_id: id}, {content: content});
-
-    
-    res.redirect(`/post/${id}`);
-});
-
-app.get('/post/:id/delete', checkAuthenticated, async function(req, res) {
-
-    const id = req.params.id;   
-
-    await Post.findByIdAndDelete(id);
-
-    res.redirect('/forum');
-});
-
-app.post('/post/:id/comment', checkAuthenticated, async function(req, res) {
-
-    const id = req.params.id;
-    const user = req.user;
-
-    const comment = req.body.content;
-
-    const lastId = await Comment.findOne().sort({ _id: -1 });
-    const newId = lastId ? Number(lastId.id) + 1 : 3000; 
-
-
-    await Comment.create({_id: newId, postId: id, userId: user.id, content: comment})
-
-    res.redirect(`/post/${id}`);
-})
-
-app.get('/post/:id/add', checkAuthenticated, async function(req, res) {
-
-    const type = req.query.icon;
-    const id = req.params.id;
-    const user = req.user;
-    const loc = req.query.l;
-
-    switch (type) {
-        case "up": {
-            await Liked.create({postId: id, userId: user._id })
-            break;
-        }
-        case "down": {
-            await Disliked.create({postId: id, userId: user._id })
-            break;
-        }
-    }
-    if (loc === 'forum') {
-        res.redirect('/forum');
-    }
-    else {
-        res.redirect(`/post/${id}`)
-    }
-});
-
-app.get('/post/:id/remove', checkAuthenticated, async function(req, res) {
-
-    const type = req.query.icon;
-    const id = req.params.id;
-    const user = req.user;
-    const loc = req.query.l;
-
-    switch (type) {
-        case "up": {
-            await Liked.findOneAndDelete({postId: id, userId: user._id})
-            break;
-        }
-        case "down": {
-            await Disliked.findOneAndDelete({postId: id, userId: user._id })
-            break;
-        }
-    }
-    if (loc === 'forum') {
-        res.redirect('/forum');
-    }
-    else {
-        res.redirect(`/post/${id}`)
-    }
-});
-
-app.get('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
-
-    const postId = req.params.id1;
-    const commId = req.params.id2;
-    const user = req.user;  
-    const post = await Post.findById(postId);
-    const comment = await Comment.find({postId: postId});
-
-    const allId = comment.map(c => c.userId);
-    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
-
-    const liked = await Liked.find({postId: postId, userId: user.id});
-    const disliked = await Disliked.find({postId: postId, userId: user.id})
-
-    res.render('edit-comment', {  post, comment, user, users, liked, disliked, editCom: commId})
-});
-
-app.post('/post/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
-
-    const postId = req.params.id1;
-    const commId = req.params.id2;
-    const comment = req.body.comment;
-
-    await Comment.updateOne({_id: commId}, {content: comment});
-
-    res.redirect('/post/' + postId);
-});
-
-app.get('/post/:id1/comment/:id2/delete', checkAuthenticated, async function(req, res) {
-
-    const postId = req.params.id1;
-    const commId = req.params.id2;
-
-    await Comment.findByIdAndDelete(commId);
-
-    res.redirect('/post/' + postId);
-});
-
-app.get('/user/:id', checkAuthenticated, async function(req, res) {
-    const id = req.params.id;
-    const user = await User.findById(id);
-    const post = await Post.find({userId: id});
-    const curUser = req.user;
-
-    res.render('profile', { user, post, curUser });
-});
-
-app.get('/user/:id/edit', checkAuthenticated, async function(req, res) {
-
-    const user = req.user;
-
-    res.render('edit_profile', { user });
-});
-
-app.post('/user/:id/edit', checkAuthenticated, async function(req, res) {
-       
-    const id = req.params.id;
-    const user = req.user;
-    const username = req.body.username;
-    var bio = req.body.bio;
-    let image;
-    let imageName;
-
-    if (req.files && req.files.profilePicInput) {
-        image = req.files.profilePicInput;
-        image.mv(path.resolve(__dirname,'public/images', image.name),(error) => {
-            if (error)
-            {
-                console.log ("Error!")
-            }
-        });
-        imageName = image.name;
-    } else {
-        imageName,e = user.profile;
-    }
-
-    bio = bio.trim().length === 0 ? "This is my profile." : bio;
-
-    await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, profile: imageName});
-       
-    res.redirect(`/user/`+id);
-});
-
-app.post('/user/:id/delete', checkAuthenticated, async function(req, res) {
-
-    const id = req.params.id;
-
-    await Liked.deleteMany({user: id});
-    await Disliked.deleteMany({user: id});
-    await Comment.deleteMany({userId: id});
-    await Post.deleteMany({userId: id});
-    await User.findByIdAndDelete(id);
-
-    res.redirect('/');
-});
-
-
-app.get('/create-post', checkAuthenticated,  async function(req, res) {
-
-    const user = req.user;
-
-    res.render('create_post', { user });
-});
-
-app.post('/create-post', checkAuthenticated, async function(req, res) {
-
-    const user = req.user;
-    const title = req.body.title;
-    const post = req.body.content;
-    const tag = req.body.tag_type;
-
-    const lastId = await Post.findOne().sort({ _id: -1 });
-    const newId = lastId ? Number(lastId.id) + 1 : 2000; 
-
-    await Post.create({_id: newId, userId: user.id, title: title, content: post, tag: tag});
-
-    res.redirect('/forum');
-})
-
 app.get('/settings', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
@@ -489,7 +254,6 @@ app.get('/settings', checkAuthenticated, async function(req, res) {
     
     res.render('settings', { user, error });
 });
-
 
 app.post('/settings', checkAuthenticated, async function(req, res) {
 
@@ -501,7 +265,12 @@ app.post('/settings', checkAuthenticated, async function(req, res) {
         const hashPass = await bcrypt.hash(newPass, 10);
         await User.updateOne({_id: user.id},
             { password: hashPass })
-        res.redirect('/logout?_method=DELETE');
+        req.logOut((err) => {
+            if (err) {
+              return next(err);
+            };
+        });
+        res.redirect('/');
     } 
     else {
         res.redirect('/settings?error=Incorrect Password')
@@ -522,11 +291,7 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
-const server = app.listen(3000, function() {
+const server = app.listen(PORT, function() {
     console.log("Running at Node 3000");
 });
 
-
-
-
-//TODO About Page

@@ -2,77 +2,192 @@
 const express = require('express');
 const router = express.Router();
 
-//Get posts
-router.get('/', function (req, res) {
-    //Return all posts
-    res.json();
+const User = require('../database/User');
+const Post = require('../database/Post');
+const Comment = require('../database/Comment');
+const Liked = require('../database/Liked');
+const Disliked = require('../database/Disliked');
+
+router.get('/create-post', checkAuthenticated,  async function(req, res) {
+
+    const user = req.user;
+
+    res.render('create_post', { user });
 });
 
-//Get a post.
-//Find the correct route.
-router.get('/', function (req, res) {
-    const found = true; //Find a post.
+router.post('/create-post', checkAuthenticated, async function(req, res) {
 
-    if (found) {
-        res.json(); //return the post.
-    } else {
-        //Error message.
-        res.status(400);
-    }
+    const user = req.user;
+    const title = req.body.title;
+    const post = req.body.content;
+    const tag = req.body.tag_type;
+
+    const lastId = await Post.findOne().sort({ _id: -1 });
+    const newId = lastId ? Number(lastId.id) + 1 : 2000; 
+
+    await Post.create({_id: newId, userId: user.id, title: title, content: post, tag: tag});
+
+    res.redirect('/forum');
+})
+
+router.get('/:id', checkAuthenticated, async function(req, res) {
+    const id = req.params.id;
+    const user = req.user
+    const post = await Post.findById(id);
+    const comment = await Comment.find({postId: id});
+
+    const allId = comment.map(c => c.userId);
+
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
+
+    const liked = await Liked.find({postId: id});
+    const disliked = await Disliked.find({postId: id})
+
+    res.render('post', { post, comment, user, users, liked, disliked });
 });
 
-//Create a post.
-//Find the correct route.
-router.post('/', function (req, res) {
-    console.log(req.body.title);
-    console.log(req.body.content);
-    console.log(req.body.tag);
+router.get('/:id/edit', checkAuthenticated, async function(req, res) {
+    const id = req.params.id;
+    const user = req.user
+    const post = await Post.findById(id);
+    const comment = await Comment.find({postId: id});
 
-    /*
-    const newPost = {
-        user: {
-            username: req.body.username
-        },
-        title: req.body.title,
-        content: req.body.content,
-        tag: req.body.tag,
-        datePosted: new Date(),
-        upVote: 0,
-        downVote: 0
-    }
+    const allId = comment.map(c => c.userId);
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
+
+    res.render('edit-post', { post, comment, user, users});
+});
+
+router.post('/:id/edit', checkAuthenticated, async function(req, res) {
+    const id = req.params.id;
+    const content = req.body.content;
     
-    if (!newPost.user.username || !newPost.title || !newPost.content || !newPost.tag) {
-        //Error message.
-        req.statusCode(400);
-    } else {
-        //Create post and store it to the database.
-        
-    }
-    */
+    await Post.updateOne({_id: id}, {content: content});
+
+    res.redirect(`/post/${id}`);
 });
 
-//Update / edit a post
-//Find the correct route.
-router.put('', function (req, res) {
-    const found = true; //Find a post.
+router.get('/:id/delete', checkAuthenticated, async function(req, res) {
 
-    if (found) {
-        //Edit a post and update the database.
-    } else {
-        res.status(400);
+    const id = req.params.id;   
+
+    await Post.findByIdAndDelete(id);
+
+    res.redirect('/forum');
+});
+
+router.get('/:id/add', checkAuthenticated, async function(req, res) {
+
+    const type = req.query.icon;
+    const id = req.params.id;
+    const user = req.user;
+    const loc = req.query.l;
+
+    switch (type) {
+        case "up": {
+            await Liked.create({postId: id, userId: user._id })
+            break;
+        }
+        case "down": {
+            await Disliked.create({postId: id, userId: user._id })
+            break;
+        }
+    }
+    if (loc === 'forum') {
+        res.redirect('/forum');
+    }
+    else {
+        res.redirect(`/post/${id}`)
     }
 });
 
-//Delete a post
-//Find the correct route.
-router.delete('', function (req, res) {
-    const found = true; //Find a post.
+router.get('/:id/remove', checkAuthenticated, async function(req, res) {
 
-    if (found) {
-        //Delete a post.
-    } else {
-        res.status(400);
+    const type = req.query.icon;
+    const id = req.params.id;
+    const user = req.user;
+    const loc = req.query.l;
+
+    switch (type) {
+        case "up": {
+            await Liked.findOneAndDelete({postId: id, userId: user._id})
+            break;
+        }
+        case "down": {
+            await Disliked.findOneAndDelete({postId: id, userId: user._id })
+            break;
+        }
+    }
+    if (loc === 'forum') {
+        res.redirect('/forum');
+    }
+    else {
+        res.redirect(`/post/${id}`)
     }
 });
+
+router.post('/:id/comment/add', checkAuthenticated, async function(req, res) {
+
+    const id = req.params.id;
+    const user = req.user;
+
+    const comment = req.body.content;
+
+    if(comment.length !== 0) {
+        const lastId = await Comment.findOne().sort({ _id: -1 });
+        const newId = lastId ? Number(lastId.id) + 1 : 3000; 
+    
+        await Comment.create({_id: newId, postId: id, userId: user.id, content: comment})
+    }
+
+    res.redirect(`/post/${id}`);
+})
+
+router.get('/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
+
+    const postId = req.params.id1;
+    const commId = req.params.id2;
+    const user = req.user;  
+    const post = await Post.findById(postId);
+    const comment = await Comment.find({postId: postId});
+
+    const allId = comment.map(c => c.userId);
+    const users = await User.find({ $or: [{_id: post.userId}, {_id: {$in: allId}}]});
+
+    const liked = await Liked.find({postId: postId, userId: user.id});
+    const disliked = await Disliked.find({postId: postId, userId: user.id})
+
+    res.render('edit-comment', {  post, comment, user, users, liked, disliked, editCom: commId})
+});
+
+router.post('/:id1/comment/:id2/edit', checkAuthenticated, async function(req, res) {
+
+    const postId = req.params.id1;
+    const commId = req.params.id2;
+    const comment = req.body.comment;
+
+    await Comment.updateOne({_id: commId}, {content: comment});
+
+    res.redirect('/post/' + postId);
+});
+
+router.get('/:id1/comment/:id2/delete', checkAuthenticated, async function(req, res) {
+
+    const postId = req.params.id1;
+    const commId = req.params.id2;
+
+    await Comment.findByIdAndDelete(commId);
+
+    res.redirect('/post/' + postId);
+});
+
+    
+function checkAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next()
+    }
+    res.redirect('/');
+}
 
 module.exports = router;
+

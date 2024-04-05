@@ -46,6 +46,7 @@ function thumbClick(icon, id, type, name) {
         window.location.href = `/post/${id}/remove?icon=${name}&l=forum`;
         break;
       case 1:
+        sessionStorage.setItem('scrollPosition', window.scrollY);
         window.location.href = `/post/${id}/add?icon=${name}&1=post`;
         break;
     }
@@ -57,6 +58,7 @@ function thumbClick(icon, id, type, name) {
         window.location.href = `/post/${id}/add?icon=${name}&l=forum`;
         break;
       case 1:
+        sessionStorage.setItem('scrollPosition', window.scrollY);
         window.location.href = `/post/${id}/remove?icon=${name}&l=post`;
         break;
     }

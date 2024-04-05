@@ -21,7 +21,7 @@
           You cannot undo this process.
       </p>
       <form action="/user/{{user.id}}/delete" method="post" class="buttons">
-          <a href="/edit_profile"><button type="button" id="cancel-button">Cancel</button></a>
+          <a href="/user/{{user.id}}"><button type="button" id="cancel-button">Cancel</button></a>
           <button type="submit" id="delete-button">Delete</button>
       </form>
     </div>

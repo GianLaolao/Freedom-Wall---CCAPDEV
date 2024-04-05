@@ -94,6 +94,11 @@ body {
     justify-content: center;
 }
 
+.text-box textarea {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
 #text_input {
     position: relative;
     height: 260px;

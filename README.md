@@ -2,24 +2,24 @@
 CCAPDEV MCO3
 
 
-# Local Set-up
+## Local Set-up
 
 npm init -y
 
-Install Packages:
+### Install Packages:
 
     npm install mongoose express hbs express-flash express-session express-fileupload method-override passport passport-local bcrypt dotenv nodemon 
 
-Create a file ".env"
+### Create a file ".env"
 
-Input the following enviroment variables:
+### Input the following enviroment variables:
 
 SESSION=SECRET=[put random characters]
 PORT=[port number]
 MONGODB_URL=[mongodb url as a string]
 
-To run, type the following in the terminal: 
+### To run, type the following in the terminal: 
     npm start
 
-To run using Nodemon, type the following:
+### To run using Nodemon, type the following:
     npm run devStart

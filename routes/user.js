@@ -49,6 +49,8 @@ router.post('/:id/edit', checkAuthenticated, async function(req, res) {
 
     bio = bio.trim().length === 0 ? "This is my profile." : bio;
 
+    bio = bio.replace(/(?:\r\n|\r|\n)/g, "<br>");
+
     await User.findOneAndUpdate({_id: id}, { username: username, bio: bio, profile: imageName});
        
     res.redirect(`/user/`+id);

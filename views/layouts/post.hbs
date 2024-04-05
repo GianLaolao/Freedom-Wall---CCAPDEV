@@ -75,7 +75,7 @@
         </div>
         <div class="comment-posts">
             <form action="/post/{{post._id}}/comment/add" method="post" class="add-comment-panel">
-                <textarea id="comment-textarea" name="content" placeholder="Add a comment" row="auto" cols="auto"></textarea>
+                <textarea id="comment-textarea" name="content" placeholder="Add a comment" row="auto" cols="auto" style="white-space: pre-wrap; overflow-wrap: break-word;"></textarea>
                 <button type="submit" id="add-comment-button">
                     Comment
                     <svg id="button-add-comment" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
@@ -90,7 +90,7 @@
                         <a href="/user/{{this.userId}}"><img id="profile-pic" src='/images/{{displayUser this.userId ../users 1}}' alt="profile-pic"></a>
                         <p id="username">{{displayUser this.userId ../users 2}}</p>
                     </div>
-                    <p id="comment">{{this.content}}</p>
+                    <p id="comment">{{{this.content}}}</p>
                     {{#if (eq this.userId ../user._id)}}
                         <div class="action-icons">
                             <a href="/post/{{../post.id}}/comment/{{this.id}}/edit"><div class="edit-comm">

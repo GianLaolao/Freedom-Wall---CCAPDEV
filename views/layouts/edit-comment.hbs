@@ -90,7 +90,7 @@
                             </div>
                         </form>
                     {{else}}
-                        <p id="comment">{{this.content}}</p>
+                        <p id="comment">{{{this.content}}}</p>
                     {{/if}}
                 </div>
             {{/each}}  
@@ -106,10 +106,10 @@
             }   
         });
 
-        var textarea = $("#post-textarea");
+        var textarea = $("#comm-textarea");
         textarea.val(textarea.val().replace(/\s+/g, ' '));
         textarea.val(textarea.val().replace(/<br>/g, '\n'));
-
+        
     </script>
 </body>
 </html>

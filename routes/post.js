@@ -19,11 +19,13 @@ router.post('/create-post', checkAuthenticated, async function(req, res) {
 
     const user = req.user;
     const title = req.body.title;
-    const post = req.body.content;
+    var post = req.body.content;
     const tag = req.body.tag_type;
 
     const lastId = await Post.findOne().sort({ _id: -1 });
     const newId = lastId ? Number(lastId.id) + 1 : 2000; 
+
+    post = post.replace(/(?:\r\n|\r|\n)/g, "<br>");
 
     await Post.create({_id: newId, userId: user.id, title: title, content: post, tag: tag});
 
@@ -60,7 +62,9 @@ router.get('/:id/edit', checkAuthenticated, async function(req, res) {
 
 router.post('/:id/edit', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
-    const content = req.body.content;
+    var content = req.body.content;
+
+    content = content.replace(/(?:\r\n|\r|\n)/g, "<br>");
     
     await Post.updateOne({_id: id}, {content: content});
 
@@ -131,7 +135,9 @@ router.post('/:id/comment/add', checkAuthenticated, async function(req, res) {
     const id = req.params.id;
     const user = req.user;
 
-    const comment = req.body.content;
+    var comment = req.body.content;
+
+    comment = comment.replace(/(?:\r\n|\r|\n)/g, "<br>");
 
     if(comment.length !== 0) {
         const lastId = await Comment.findOne().sort({ _id: -1 });
@@ -164,7 +170,9 @@ router.post('/:id1/comment/:id2/edit', checkAuthenticated, async function(req, r
 
     const postId = req.params.id1;
     const commId = req.params.id2;
-    const comment = req.body.comment;
+    var comment = req.body.comment;
+
+    comment = comment.replace(/(?:\r\n|\r|\n)/g, "<br>");
 
     await Comment.updateOne({_id: commId}, {content: comment});
 
@@ -187,7 +195,7 @@ function checkAuthenticated(req, res, next) {
         return next()
     }
     res.redirect('/');
-}
+} 
 
 module.exports = router;
 

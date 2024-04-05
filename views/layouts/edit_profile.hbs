@@ -72,7 +72,8 @@
     <script src="/js/script.js"></script>
     <script>
       var textarea = $("#text_input");
-       textarea.val(textarea.val().replace('<br>','\n'));
+       textarea.val(textarea.val().replace(/\s+/g, ' '));
+       textarea.val(textarea.val().replace(/<br>/g, '\n'));
     </script>
   </body>
 </html>

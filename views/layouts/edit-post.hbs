@@ -25,7 +25,7 @@
             </div>
             <h3 id="title">{{post.title}} </h3>
             <form action="/post/{{post.id}}/edit" method="POST">
-                <textarea id="post-textarea" name="content">{{{post.content}}}</textarea>
+                <textarea id="post-textarea" name="content" style="white-space: pre-wrap; overflow-wrap: break-word;">{{{post.content}}}</textarea>
                 <div class="action-icons">
                     <div class="i-right">
                         <a href="/post/{{post.id}}"><button type="button" class="post-btn" id="post-cancel">Cancel</button></a>
@@ -42,7 +42,7 @@
                         <a href="/user/{{this.userId}}"><img id="profile-pic" src='/images/{{displayUser this.userId ../users 1}}' alt="profile-pic"></a>
                         <p id="username">{{displayUser this.userId ../users 2}}</p>
                     </div>
-                    <p contenteditable="false" id="comment">{{this.content}}</p>
+                    <p contenteditable="false" id="comment">{{{this.content}}}</p>
                     {{#if (eq this.userId user._id)}}
                     <div class="action-icons">
                             <div class="edit-comm">

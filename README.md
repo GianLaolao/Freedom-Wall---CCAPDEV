@@ -14,8 +14,8 @@ npm init -y
 
 ### Input the following enviroment variables:
 
-SESSION=SECRET=[put random characters]
-PORT=[port number]
+SESSION=SECRET=[put random characters]\
+PORT=[port number]\
 MONGODB_URL=[mongodb url as a string]
 
 ### To run, type the following in the terminal: 

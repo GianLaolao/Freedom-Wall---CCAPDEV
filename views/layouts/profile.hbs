@@ -26,9 +26,9 @@
                     <span class="dates">Birthday: {{formatDate showUser.birthday}}</span> 
                     <span class="dates">Joined: {{formatDate showUser.dateCreated}}</span>
                 </div>
-                {{#if (eq user._id curUser._id)}}
+                {{#if (eq user._id showUser._id)}}
                 <div class="set-pfp">
-                    <a href="/user/{{curUser._id}}/edit">
+                    <a href="/user/{{showUser._id}}/edit">
                         <svg class="icons" id="gear-icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" width="30" height="30" color="#00703C">
                             <defs>
                                 <style>.cls-6374f8d9b67f094e4896c636-1{fill:white;stroke:currentColor;stroke-miterlimit:10;}</style>

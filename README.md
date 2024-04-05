@@ -10,3 +10,5 @@ Create file name ".env"
 Input the ff:
 
 SESSION_SECRET=put random characters here
+PORT=3000
+MONGO_URL=[mongodb database URL]

@@ -4,7 +4,7 @@ CCAPDEV MCO3
 
 ## Local Set-up
 
-### Inital Set-up
+### Initial Set-up
     npm init -y
 
 ### Install Packages:
@@ -13,10 +13,10 @@ CCAPDEV MCO3
 
 ### Create a file ".env"
 
-### Input the following enviroment variables:
+### Input the following environment variables:
 
-    SESSION=SECRET=[put random characters]\
-    PORT=[port number]\
+    SESSION=SECRET=[put random characters]
+    PORT=[port number]
     MONGODB_URL=[mongodb database connection string]
 
 ### To run, type the following in the terminal: 

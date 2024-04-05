@@ -83,7 +83,7 @@
                     </div>
                     {{#if (eq this.id ../editCom)}}
                         <form action="/post/{{../post.id}}/comment/{{this.id}}/edit" method="POST">
-                            <textarea id="comm-textarea" name="comment">{{{this.content}}}</textarea>
+                            <textarea id="comm-textarea" name="comment" style="white-space: pre-wrap; overflow-wrap: break-word;">{{{this.content}}}</textarea>
                             <div class="action-icons">
                                 <a href="/post/{{../post.id}}"><button type="button" class="comm-btn">Cancel</button></a>
                                 <button type="submit" class="comm-btn">Save</button>

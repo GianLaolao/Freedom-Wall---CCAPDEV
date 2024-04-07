@@ -105,6 +105,7 @@ hbs.registerHelper('color', function (data, user, post, type) {
 hbs.registerHelper('forumNum', function(data, id) {
 
     const num = data.filter(d => d.postId == id).length
+    
     return num;
 })
 
@@ -181,6 +182,9 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
     const user = req.user;
 
     const filter = req.query.filter;
+    const liked = await Liked.find();
+    const disliked = await Disliked.find();
+    
     var post = await Post.find({}).sort({ datePosted: -1});
 
     if(filter === "new") {
@@ -190,14 +194,20 @@ app.get('/forum', checkAuthenticated, async function(req,res) {
         post = await Post.find({}).sort({ datePosted: 1});
     }
     else if(filter === "top") {
-        post = await Post.find({}).sort({ upVote: -1});
+        post = await Post.aggregate([
+            {
+              $lookup: { from: 'likeds', localField: '_id', foreignField: 'postId',as: 'likes'}
+            },
+            {
+              $addFields: { likes: { $size: '$likes' } }
+            },
+            {
+              $sort: { likes: -1 } 
+            }
+        ])
     }
-
     var allId = post.map(post => post.userId);
     var users = await User.find({ _id: {$in: allId}});
-    
-    const liked = await Liked.find();
-    const disliked = await Disliked.find();
 
     res.render('forum', { post, user, users, liked, disliked})
 });
